@@ -1,7 +1,0 @@
-{
-  "name": "app",
-  "version": "1.0.0",
-  "description": "pandesal app for ethonline2023",
-  "main": "index.js",
-  "license": "MIT"
-}
