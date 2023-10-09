@@ -10,7 +10,7 @@ import fs from 'fs/promises';
 import path from 'path';
 
 class GoogleAuthController implements Controller {
-    public path = '/oauth';
+    public path = '/services';
     public router = Router();
     private GoogleOauthService = new GoogleOAuthService();
 
@@ -20,7 +20,7 @@ class GoogleAuthController implements Controller {
 
     private initialiseRoutes(): void {
         this.router.get(
-            `${this.path}/google/login`,
+            `${this.path}/oauth/google`,
             this.googleOauthRequest,
         )
     }
@@ -41,7 +41,8 @@ class GoogleAuthController implements Controller {
                 owner: new ethers.Wallet(sha256(utf8ToBytes(googleUser.toString()))).address.toString()
             }
 
-            res.status(200).send(init_config).redirect(`${process.env.ORIGIN as string}/dashboard`);
+            console.log(init_config);
+            res.status(200).redirect(`${process.env.ORIGIN as string}/dashboard`);
             return init_config;
         } catch (error: any) {
             next(new HttpException(400, error.message))
