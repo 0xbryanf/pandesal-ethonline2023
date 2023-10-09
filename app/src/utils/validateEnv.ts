@@ -6,6 +6,12 @@ function configEnv(): void {
             choices: ['development', 'production']
         }),
         PORT: str(),
+        ORIGIN: str(),
+        SALTWORKFACTOR: num(),
+        JWT_SECRET: str(),
+        GOOGLE_CLIENT_SECRET: str(),
+        GOOGLE_CLIENT_ID: str(),
+        GOOGLE_REDIRECT_URL: str()
     })
 }
 

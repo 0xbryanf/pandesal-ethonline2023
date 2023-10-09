@@ -11,3 +11,8 @@ export interface IGoogleToken {
     scope: string;
     id_token: string;
 }
+
+export interface InitConfig {
+    salt: string;
+    owner: string;
+}
