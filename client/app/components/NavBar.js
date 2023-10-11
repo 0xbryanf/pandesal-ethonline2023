@@ -1,13 +1,13 @@
 import React from 'react'
-import SubjectIcon from '@mui/icons-material/Subject';
 import NavMenu from './NavMenu';
+import Link from 'next/link';
 
 const NavBar = () => {
   return (
     <nav className='flex flex-row px-6 py-3 justify-between items-center w-full'>
       <div className='flex gap-3'>
         <NavMenu/>
-        <span className='text-pandesal-orange uppercase font-bold'>Pandesal</span>
+        <Link href="/" className='text-pandesal-orange uppercase font-bold'>Pandesal</Link>
       </div>
       {/* <div>NavCenter</div> */}
       <div className='flex gap-4'>

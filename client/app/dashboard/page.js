@@ -1,9 +1,11 @@
-import { CardContent } from '@mui/material';
+import CardContent from '@mui/material/CardContent';
 import Card from '@mui/material/Card';
+import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
+import Link from 'next/link';
 
 export default function Page() {
   return (
-    <div className="flex h-full box-border flex-col px-24 py-8 bg-pandesal-grey/20 gap-8">
+    <div className="flex min-h-full box-border flex-col px-24 py-8 bg-pandesal-grey/20 gap-8">
 
       {/* Personal Information */}
         <h1 className='text-3xl'>Personal Information</h1>
@@ -72,7 +74,10 @@ export default function Page() {
 
           <Card variant='outlined' sx={{ minWidth: 250 }}>
             <CardContent>
-              <h2 className="text-xl">Pandesal Jam</h2>
+              <h2 className="text-xl flex justify-between items-center">
+                Pandesal Jam
+                <Link href="/dashboard/group" className='underline'><ArrowOutwardIcon/></Link>
+              </h2>
               <p className='text-gray-500 text-sm py-2'>Lorem, ipsum dolor.</p>
             </CardContent>
           </Card>

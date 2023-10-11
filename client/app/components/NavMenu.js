@@ -36,11 +36,15 @@ const NavMenu = () => {
       >
         <MenuItem onClick={handleClose}>
           <Link href='/dashboard'>
-            Dashboard
+            My Dashboard
           </Link>
             
         </MenuItem>
-        <MenuItem onClick={handleClose}>Learn More</MenuItem>
+        <MenuItem onClick={handleClose}>
+          <Link href='/about'>
+            About Us
+          </Link>
+        </MenuItem>
       </Menu>
     </div>
   )
