@@ -1,11 +1,12 @@
 import React from 'react'
 import SubjectIcon from '@mui/icons-material/Subject';
+import NavMenu from './NavMenu';
 
 const NavBar = () => {
   return (
     <nav className='flex flex-row px-6 py-3 justify-between items-center w-full'>
       <div className='flex gap-3'>
-        <SubjectIcon/>
+        <NavMenu/>
         <span className='text-pandesal-orange uppercase font-bold'>Pandesal</span>
       </div>
       {/* <div>NavCenter</div> */}

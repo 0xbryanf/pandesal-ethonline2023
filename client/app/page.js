@@ -2,21 +2,39 @@ import Image from 'next/image'
 
 export default function Home() {
   return (
-    <div className="flex min-h-full flex-col md:flex-row p-24 bg-pandesal-blue text-white gap-8">
+    <div
+      className="flex h-full box-border flex-col md:flex-row p-24 items-center bg-pandesal-blue text-white gap-8"
+      style={{
+        backgroundImage: `radial-gradient(650px circle at 0% 0%,
+          hsl(218, 41%, 35%) 15%,
+          hsl(218, 41%, 30%) 35%,
+          hsl(218, 41%, 20%) 75%,
+          hsl(218, 41%, 19%) 80%,
+          transparent 100%),
+        radial-gradient(1250px circle at 100% 100%,
+          hsl(218, 41%, 45%) 15%,
+          hsl(218, 41%, 30%) 35%,
+          hsl(218, 41%, 20%) 75%,
+          hsl(218, 41%, 19%) 80%,
+          transparent 100%)`
+      }}
+      >
+
+
       {/* Left Section */}
-      <div className='flex flex-col w-1/2'>
+      <div className='flex flex-col w-1/2 gap-2 p-4'>
         <h1 className="text-6xl">
-          Frictionless onboarding, a friends-only central bank
+          Frictionless Web3 onboarding, a friends-only central bank
         </h1>
         <p>
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eum delectus nemo commodi accusantium ipsum optio quod quisquam doloribus natus recusandae eaque, minus laboriosam officiis omnis dolorum dolore blanditiis nam! Asperiores expedita facilis, provident cum minus eligendi!
+          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eum delectus nemo commodi accusantium ipsum optio.
         </p>
 
       </div>
 
       {/* Right Section */}
-      <div className="flex flex-col w-1/2 items-center text-center gap-2 justify-center bg-white rounded border-2 border-black shadow-md">
-        <button className='bg-pandesal-orange rounded px-6 py-1 hover:shadow-md text-xl'>Sign Up With Google</button>
+      <div className="flex h-full flex-col w-1/2 items-center text-center gap-2 p-4 justify-center bg-white/80 rounded border-2 border-black shadow-md">
+        <button className='bg-pandesal-orange rounded px-6 py-1 hover:shadow-md duration-100 text-xl'>Sign Up With Google</button>
         <p className="text-black">
           Lorem ipsum dolor sit amet consectetur adipisicing elit.
         </p>
