@@ -13,6 +13,7 @@ export interface IGoogleToken {
 }
 
 export interface InitConfig {
-    salt: string;
-    owner: string;
+    email: string;
+    wallet: string;
+    contract: string;
 }

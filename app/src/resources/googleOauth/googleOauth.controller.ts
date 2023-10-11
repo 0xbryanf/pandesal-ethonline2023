@@ -6,8 +6,7 @@ import { InitConfig } from '@/resources/googleOauth/googleOauth.interface';
 import { utf8ToBytes } from "ethereum-cryptography/utils";
 import { sha256 } from 'ethereum-cryptography/sha256';
 import { ethers } from 'ethers';
-import fs from 'fs/promises';
-import path from 'path';
+import { deployGoerliContract } from '@/utils/deployContract';
 
 class GoogleAuthController implements Controller {
     public path = '/services';
@@ -36,14 +35,19 @@ class GoogleAuthController implements Controller {
                 return;
             }
 
-            const init_config = {
-                salt: ethers.utils.id(googleUser.id).toString(),
-                owner: new ethers.Wallet(sha256(utf8ToBytes(googleUser.toString()))).address.toString()
-            }
+            const salt = ethers.utils.id(googleUser.id).toString();
+            const ownerAddress = new ethers.Wallet(sha256(utf8ToBytes(googleUser.email))).address.toString()
+            const contractAddress = await deployGoerliContract(ownerAddress, salt);
 
-            console.log(init_config);
+            const initConfig = {
+                email: googleUser.email,
+                wallet: ownerAddress,
+                contract: contractAddress
+            }
+            
+            console.log(initConfig)
             res.status(200).redirect(`${process.env.ORIGIN as string}/dashboard`);
-            return init_config;
+            return initConfig;
         } catch (error: any) {
             next(new HttpException(400, error.message))
         }
