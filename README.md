@@ -91,7 +91,7 @@ To get started with Pandesal, follow these steps:
     ```bash
     npm run server
 
-If you see **App is listening on port 1989**, then you have configured the server correctly.
+    If you see **App is listening on port 1989**, then you have configured the server correctly.
 
 6. **Navigate back to root folder.**
 
@@ -109,10 +109,10 @@ If you see **App is listening on port 1989**, then you have configured the serve
     NEXT_PUBLIC_SERVER_ENDPOINT=
     NEXT_PUBLIC_GOOGLE_OAUTH_REDIRECT_URL=http://localhost:1989/api/services/oauth/google 
 
-If you see **- Local: http://localhost:3000**, then you have configured the client side correctly. Copy **http://localhost:3000** to your browser.
+    If you see **- Local: http://localhost:3000**, then you have configured the client side correctly. Copy    **http://localhost:3000** to your browser.
 
 
-##There you go, you're all set to start using Pandesal!
+## There you go, you're all set to start using Pandesal!!
 
 For more detailed instructions, refer to the [Getting Started Guide](docs/getting-started.md).
 This revised section provides clear, step-by-step instructions for getting started with Pandesal, including setting up the server and client sides with the required environment variables and dependencies.
