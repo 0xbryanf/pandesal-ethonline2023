@@ -77,17 +77,15 @@ To get started with Pandesal, follow these steps:
     npm install
 
 4. **Create a .env file. Make sure to fill in the following important information. For Google credentials, visit this link:** https://console.cloud.google.com/
-
-Make sure to fill in all the important information. For **Google** credentials, visit this link:
     ```bash
-    **NODE_ENV**=development
-    **PORT**=1989
-    **ORIGIN**=http://localhost:3000
-    **SALTWORKFACTOR**=
-    **JWT_SECRET**=
-    **GOOGLE_CLIENT_SECRET**=
-    **GOOGLE_CLIENT_ID**=
-    **GOOGLE_REDIRECT_URL**=http://localhost:1989/api/services/oauth/google
+    NODE_ENV=development
+    PORT=1989
+    ORIGIN=http://localhost:3000
+    SALTWORKFACTOR=
+    JWT_SECRET=
+    GOOGLE_CLIENT_SECRET=
+    GOOGLE_CLIENT_ID=
+    GOOGLE_REDIRECT_URL=http://localhost:1989/api/services/oauth/google
 
 5. **Start the server:**
     ```bash
@@ -107,9 +105,9 @@ If you see **App is listening on port 1989**, then you have configured the serve
 
 9. **Create a .env.local file and fill in the following important information:**
     ```bash
-    **NEXT_PUBLIC_GOOGLE_CLIENT_ID**=
-    **NEXT_PUBLIC_SERVER_ENDPOINT**=
-    **NEXT_PUBLIC_GOOGLE_OAUTH_REDIRECT_URL**=http://localhost:1989/api/services/oauth/google 
+    NEXT_PUBLIC_GOOGLE_CLIENT_ID=
+    NEXT_PUBLIC_SERVER_ENDPOINT=
+    NEXT_PUBLIC_GOOGLE_OAUTH_REDIRECT_URL=http://localhost:1989/api/services/oauth/google 
 
 If you see **- Local: http://localhost:3000**, then you have configured the client side correctly. Copy **http://localhost:3000** to your browser.
 
