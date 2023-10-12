@@ -11,8 +11,11 @@ const NavBar = () => {
       </div>
       {/* <div>NavCenter</div> */}
       <div className='flex gap-4'>
-        <button>Log In</button>
-        <button className='rounded px-3 py-1 border border-pandesal-orange text-pandesal-orange'>Sign Up</button>
+        <button className='rounded px-3 py-1 border border-pandesal-orange text-pandesal-orange'>
+          <Link href='/#signup-form'>
+            Log In
+          </Link>
+        </button>
       </div>
     </nav>
   )

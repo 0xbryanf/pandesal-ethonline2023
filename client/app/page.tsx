@@ -33,8 +33,8 @@ export default function Home() {
       </div>
 
       {/* Right Section */}
-      <div className="flex h-full flex-col w-1/2 items-center text-center gap-2 p-4 justify-center bg-white/80 rounded border-2 border-black shadow-md">
-        <button className='bg-pandesal-orange rounded px-6 py-1 hover:shadow-md duration-100 text-xl'>Sign Up With Google</button>
+      <div id='signup-form' className="flex h-full flex-col w-1/2 items-center text-center gap-2 p-4 justify-center bg-white/80 rounded border-2 border-black shadow-md">
+        <button className='bg-pandesal-orange rounded px-6 py-1 hover:shadow-md duration-100 text-xl'>Sign Up or Log In with Google</button>
         <p className="text-black">
           Lorem ipsum dolor sit amet consectetur adipisicing elit.
         </p>
