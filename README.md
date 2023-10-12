@@ -2,7 +2,7 @@
 
 **Authors:**
 - [0xbryanf@gmail.com](mailto:0xbryanf@gmail.com)
-- [paolanocom@gmail.com](mailto:paolanocom@gmail.com
+- [paolanocom@gmail.com](mailto:paolanocom@gmail.com)
 
 Pandesal is a decentralized finance (DeFi) platform that reimagines the concept of "you are who your friends are." With our innovative platform, users can seamlessly collaborate, establish unique blockchain identities, and perform gasless transactions. Pandesal empowers groups of friends to pool funds, generate income together, and support one another effortlessly.
 
@@ -64,50 +64,57 @@ Pandesal is versatile and can be used for various purposes, including but not li
 ## Getting Started
 To get started with Pandesal, follow these steps:
 
-1. Clone the repository:
+1. **Clone the repository:**
    ```bash
    git clone https://github.com/0xbryanf/pandesal-ethonline2023.git
 
-2. Navigate to the app directory: 
+2. **Navigate to the app directory:**
     ```bash
     cd app/
 
-3. Install the Node Package Manager (NPM) dependencies:
+3. **Install the Node Package Manager (NPM) dependencies:**
     ```bash
     npm install
 
-4. Create a .env file. Make sure to fill in the following important information. For Google credentials, visit this link: https://console.cloud.google.com/
+4. **Create a .env file. Make sure to fill in the following important information. For Google credentials, visit this link:** https://console.cloud.google.com/
 
 Make sure to fill in all the important information. For **Google** credentials, visit this link:
-**NODE_ENV**=development
-**PORT**=1989
-**ORIGIN**=http://localhost:3000
-**SALTWORKFACTOR**=
-**JWT_SECRET**=
-**GOOGLE_CLIENT_SECRET**=
-**GOOGLE_CLIENT_ID**=
-**GOOGLE_REDIRECT_URL**=http://localhost:1989/api/services/oauth/google
+    ```bash
+    **NODE_ENV**=development
+    **PORT**=1989
+    **ORIGIN**=http://localhost:3000
+    **SALTWORKFACTOR**=
+    **JWT_SECRET**=
+    **GOOGLE_CLIENT_SECRET**=
+    **GOOGLE_CLIENT_ID**=
+    **GOOGLE_REDIRECT_URL**=http://localhost:1989/api/services/oauth/google
 
-5. Start the server: 
+5. **Start the server:**
     ```bash
     npm run server
 
-If you see 'App is listening on port 1989', then you have configured the server correctly.
+If you see **App is listening on port 1989**, then you have configured the server correctly.
 
-6. Navigate back to root folder.
-7. Then, navigate to the client directory: cd client/
-8. Install node package manager: npm install.
-9. Create dotenv file: touch .env.local
+6. **Navigate back to root folder.**
 
-Fill in all the important information.
-**NEXT_PUBLIC_GOOGLE_CLIENT_ID**=
-**NEXT_PUBLIC_SERVER_ENDPOINT**=
-**NEXT_PUBLIC_GOOGLE_OAUTH_REDIRECT_URL**=http://localhost:1989/api/services/oauth/google 
+7. **Then, navigate to the client directory:**
+    ```bash
+    cd client/
 
-If you see '- Local: http://localhost:3000', then you have configured the client side correctly.
-Copy 'http://localhost:3000' to your browser.
+8. **Install the Node Package Manager (NPM) dependencies:**
+    ```bash
+    npm install
 
-There you go..
+9. **Create a .env.local file and fill in the following important information:**
+    ```bash
+    **NEXT_PUBLIC_GOOGLE_CLIENT_ID**=
+    **NEXT_PUBLIC_SERVER_ENDPOINT**=
+    **NEXT_PUBLIC_GOOGLE_OAUTH_REDIRECT_URL**=http://localhost:1989/api/services/oauth/google 
+
+If you see **- Local: http://localhost:3000**, then you have configured the client side correctly. Copy **http://localhost:3000** to your browser.
+
+
+##There you go, you're all set to start using Pandesal!
 
 For more detailed instructions, refer to the [Getting Started Guide](docs/getting-started.md).
-
+This revised section provides clear, step-by-step instructions for getting started with Pandesal, including setting up the server and client sides with the required environment variables and dependencies.
