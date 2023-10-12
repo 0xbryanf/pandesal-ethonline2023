@@ -12,6 +12,12 @@ export interface IGoogleToken {
     id_token: string;
 }
 
+export interface ISessions {
+    user: string;
+    valid: boolean;
+    userAgent: string;
+}
+
 export interface InitConfig {
     email: string;
     wallet: string;

@@ -44,6 +44,16 @@ class GoogleOAuthService {
             throw new HttpException(400, error.message);
         }
     }
+
+    public async createSession(userId: string, userVerified: boolean, userAgent: string): Promise<string> {
+        const session = {
+            user: userId,
+            verified: userVerified,
+            userAgent
+        }
+        const sessionJSON = JSON.stringify(session);
+        return sessionJSON;
+    }
 }
 
 export default GoogleOAuthService;
