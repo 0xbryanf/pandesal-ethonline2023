@@ -5,21 +5,21 @@ import Account from '../components/Account';
 import NetworkCard from '../components/NetworkCard';
 import GroupCard from '../components/GroupCard';
 
-export default function Page() {
+export default function Dashboard() {
   return (
-    <div className="flex min-h-full box-border flex-col px-24 py-8 bg-pandesal-grey/20 gap-8">
+    <div className="flex box-border flex-col px-24 py-8 bg-pandesal-grey/20 gap-8">
 
       {/* Personal Information */}
-        <h1 className='text-3xl'>Your Account</h1>
+        <h1 className='text-3xl'>1. Create Your Account</h1>
         <Account/>
 
       {/* Network Information */}
-        <h1 className='text-3xl'>Deploy Your Account</h1>
+        <h1 className='text-3xl'>2. Deploy Your Account</h1>
         <div className="flex flex-row gap-4 mb-4">
-          <NetworkCard network='Goerli' status={true} />
-          <NetworkCard network='Sepolia' status={false} />
-          <NetworkCard network='Polygon Mumbai' status={false} />
-          <NetworkCard network='Scroll' status={true} />
+          <NetworkCard network='Goerli' />
+          <NetworkCard network='Sepolia'  />
+          <NetworkCard network='Polygon Mumbai' />
+          <NetworkCard network='Scroll' />
 
           {/* <Card variant='outlined' sx={{ minWidth: 250 }}>
             <CardContent>
@@ -52,9 +52,10 @@ export default function Page() {
         </div>
 
       {/* Group Information */}
-        <h1 className='text-3xl'>Create or Join a Group</h1>
+        <h1 className='text-3xl'>3. Create or Join a Group</h1>
         <div className="flex flex-row gap-4 mb-4">
           <GroupCard name='Pandesal Jam' description='Lorem, ipsum dolor.' />
+          <GroupCard name='Create New Group' description='' />
 
 
         </div>

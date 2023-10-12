@@ -3,7 +3,7 @@ import Image from 'next/image'
 export default function Home() {
   return (
     <div
-      className="flex h-full box-border flex-col md:flex-row p-24 items-center bg-pandesal-blue text-white gap-8"
+      className="flex box-border flex-col md:flex-row p-24 items-center bg-pandesal-blue text-white gap-8"
       style={{
         backgroundImage: `radial-gradient(650px circle at 0% 0%,
           hsl(218, 41%, 35%) 15%,

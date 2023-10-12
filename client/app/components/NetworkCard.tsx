@@ -1,14 +1,16 @@
-import React from 'react'
+'use client'
+import React, { useState } from 'react'
 import CardContent from '@mui/material/CardContent';
 import Card from '@mui/material/Card';
 
-const NetworkCard = ({network, status}) => {
+const NetworkCard = ({network}) => {
+  const [deployStatus, setDeployStatus] = useState(false);
 
   return (
     <Card variant='outlined' sx={{ minWidth: 250 }}>
     <CardContent>
       <h2 className="text-xl">{network}</h2>
-        {status ? (
+        {deployStatus ? (
           <p className='text-gray-500 text-sm py-2'>
             Deployed! 🎉
           </p>
