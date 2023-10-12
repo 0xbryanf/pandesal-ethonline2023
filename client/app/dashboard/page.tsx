@@ -20,43 +20,19 @@ export default function Dashboard() {
           <NetworkCard network='Sepolia'  />
           <NetworkCard network='Polygon Mumbai' />
           <NetworkCard network='Scroll' />
-
-          {/* <Card variant='outlined' sx={{ minWidth: 250 }}>
-            <CardContent>
-              <h2 className="text-xl">Goerli</h2>
-              <p className='text-gray-500 text-sm py-2'>Deployed!</p>
-            </CardContent>
-          </Card>
-
-          <Card variant='outlined' sx={{ minWidth: 250 }}>
-            <CardContent>
-              <h2 className="text-xl">Sepolia</h2>
-              <p className='text-gray-500 text-sm py-2'>Inactive. Deploy now!</p>
-            </CardContent>
-          </Card>
-
-          <Card variant='outlined' sx={{ minWidth: 250 }}>
-            <CardContent>
-              <h2 className="text-xl">Polygon Mumbai</h2>
-              <p className='text-gray-500 text-sm py-2'>Inactive. Deploy now!</p>
-            </CardContent>
-          </Card>
-
-          <Card variant='outlined' sx={{ minWidth: 250 }}>
-            <CardContent>
-              <h2 className="text-xl">Scroll</h2>
-              <p className='text-gray-500 text-sm py-2'>Deployed!</p>
-            </CardContent>
-          </Card> */}
-
         </div>
 
       {/* Group Information */}
         <h1 className='text-3xl'>3. Create or Join a Group</h1>
         <div className="flex flex-row gap-4 mb-4">
-          <GroupCard name='Pandesal Jam' description='Lorem, ipsum dolor.' />
-          <GroupCard name='Create New Group' description='' />
 
+          {/**
+           * @todo: Get user's groups and map, passing only the group ID;
+           * name and desc will be fetched within component using ID
+          */}
+
+          <GroupCard name='Pandesal Jam' description='Lorem, ipsum dolor.' />
+          <GroupCard name='Create New Group' description='' />  {/* Change this element later */}
 
         </div>
     </div>

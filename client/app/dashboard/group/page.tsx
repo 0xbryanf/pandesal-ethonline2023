@@ -15,7 +15,14 @@ export default function GroupPage() {
   useEffect(() => {
     const findName = searchParams.get('name');
     setName(findName);
+    
+    /**
+     * @todo: add setting of description, pool amount and ongoing loans in this group
+     * @todo: replace search params from name to group ID
+     * @todo: add validation if user is a member of this group, else cannot access
+     */
   }, [])
+  
 
   return (
     <div className="flex box-border flex-col px-24 py-8 bg-pandesal-grey/20 gap-8">
