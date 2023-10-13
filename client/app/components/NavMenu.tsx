@@ -1,3 +1,4 @@
+"use client"
 import React, { useState } from 'react';
 import SubjectIcon from '@mui/icons-material/Subject';
 import Menu from '@mui/material/Menu';
