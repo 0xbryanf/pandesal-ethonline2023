@@ -20,6 +20,12 @@ Pandesal is a decentralized finance (DeFi) platform that reimagines the concept 
 Pandesal revolutionizes collaborative finance with a focus on user-friendly, secure, and efficient blockchain interactions. By offering deterministic wallet addresses, gasless transaction deployment, unique blockchain identities, and multi-signature security, Pandesal creates a supportive ecosystem for groups of friends to manage their finances together.
 
 ## Idea
+Imagine this scenario: You're at the bakery, craving that delicious pandesal (bread), but alas, you find out you're a bit short on cash to make the purchase. This is where Pandesal comes to the rescue! Whether you're the one in need or the friend who can help out, Pandesal offers a solution. It allows your friend to cover the cost while ensuring a secure and guaranteed way for the lender to be paid back.
+
+In the process, you not only saved your friend but also saved your friendship from any consequences that borrowing money can sometimes bring.
+
+But Pandesal doesn't stop there! It's not just about individual transactions; it's about making group financing effortless, secure, and rewarding. You can use Pandesal for shared savings towards future goals, creating an emergency fund for your group, setting up a vacation fund with your team, and much more.
+
 Our DeFi platform is tailored for groups of friends looking to generate income while supporting one another. Here's how Pandesal works:
 
 1. **Deterministic Wallet Addresses:** Users can create unique wallet addresses derived from their email addresses. These addresses can be deployed on various blockchain networks, ensuring uniqueness for each user. If a user engages in malicious activity, they can be banned from that particular network.
@@ -89,9 +95,9 @@ To get started with Pandesal, follow these steps:
 
 5. **Start the server:**
     ```bash
-    npm run server
+    npm run dev
 
-    If you see **App is listening on port 1989**, then you have configured the server correctly.
+If you see **App is listening on port 1989**, then you have configured the server correctly.
 
 6. **Navigate back to root folder.**
 
@@ -109,7 +115,11 @@ To get started with Pandesal, follow these steps:
     NEXT_PUBLIC_SERVER_ENDPOINT=
     NEXT_PUBLIC_GOOGLE_OAUTH_REDIRECT_URL=http://localhost:1989/api/services/oauth/google 
 
-    If you see **- Local: http://localhost:3000**, then you have configured the client side correctly. Copy    **http://localhost:3000** to your browser.
+10. **Start the server:**
+    ```bash
+    npm run dev
+
+If you see - Local: http://localhost:3000, then you have configured the client side correctly. Copy    **http://localhost:3000** to your browser.
 
 
 ## There you go, you're all set to start using Pandesal!!

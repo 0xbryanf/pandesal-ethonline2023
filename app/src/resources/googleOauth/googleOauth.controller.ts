@@ -8,7 +8,8 @@ import { accessTokenCookieOptions, refreshTokenCookieOptions } from '@/utils/coo
 import { utf8ToBytes } from "ethereum-cryptography/utils";
 import { sha256 } from 'ethereum-cryptography/sha256';
 import { ethers } from 'ethers';
-import { deployGoerliContract } from '@/utils/deployContract';
+import { precomputedContract, deployGoerliContract } from '@/utils/deployContract';
+import axios from 'axios';
 
 class GoogleAuthController implements Controller {
     public path = '/services';
@@ -27,8 +28,13 @@ class GoogleAuthController implements Controller {
         )
 
         this.router.get(
-            `${this.path}/oauth/initConfig`,
-            this.getInitConfig
+            `${this.path}/oauth/get-account`,
+            this.getAccount
+        )
+
+        this.router.get(
+            `${this.path}/oauth/deploy-goerli-contract`,
+            this.goerliContract
         )
     }
 
@@ -37,7 +43,6 @@ class GoogleAuthController implements Controller {
             const code = req.query.code as string;
             const { id_token, access_token } = await this.GoogleOauthService.getGoogleOAuthTokens({ code });
             const googleUser = await this.GoogleOauthService.getGoogleUser({ id_token, access_token });
-
             this.user = googleUser;
 
             if (!googleUser.verified_email) {
@@ -64,7 +69,7 @@ class GoogleAuthController implements Controller {
         }
     }
 
-    private getInitConfig = async (req: Request, res: Response, next: NextFunction): Promise<InitConfig | void> => {
+    private getAccount = async (req: Request, res: Response, next: NextFunction): Promise<InitConfig | void> => {
         try {
             if (!this.user.verified_email) {
                 next(new HttpException(403, 'Google account is not verified'));
@@ -73,7 +78,7 @@ class GoogleAuthController implements Controller {
 
             const salt = ethers.utils.id(this.user.id).toString();
             const ownerAddress = new ethers.Wallet(sha256(utf8ToBytes(this.user.email))).address.toString()
-            const contractAddress = await deployGoerliContract(ownerAddress, salt);
+            const contractAddress = await precomputedContract(ownerAddress, salt);
 
             const initConfig = {
                 email: this.user.email,
@@ -83,6 +88,42 @@ class GoogleAuthController implements Controller {
             
             res.status(200).send(initConfig);
         } catch (error: any) {
+            console.error(error, 'Cannot get account');
+            next(new HttpException(400, error.message))
+        }
+    }
+
+    private goerliContract = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+        try {
+            if (!this.user.verified_email) {
+                next(new HttpException(403, 'Google account is not verified'));
+                return;
+            }
+
+            console.log('Initiating deployment to goerli network...')
+            const salt = ethers.utils.id(this.user.id).toString();
+            const ownerAddress = new ethers.Wallet(sha256(utf8ToBytes(this.user.email))).address.toString()
+            const goerliContractAddress = await deployGoerliContract(ownerAddress, salt)
+            console.log(`Contract succeffuly deployed to goerli network.`);
+            console.log(`Contract deployed to address: ${goerliContractAddress}`)
+            res.status(200).send(goerliContractAddress);
+            
+            console.log(`Contract verification initiated..`)
+            const data = {
+                contractAddress: goerliContractAddress.toString(),
+                args: [ownerAddress.toString()],
+                network: 'goerli'
+            }
+
+            setTimeout(async () => {
+                await axios.post('http://localhost:2019/api/verification/goerli-contract', data)
+                    .catch((error) => {
+                        console.error('Error:', error)
+                    })
+            }, 60000)
+            
+        } catch (error: any) {
+            console.error(error, 'Cannot get account');
             next(new HttpException(400, error.message))
         }
     }
