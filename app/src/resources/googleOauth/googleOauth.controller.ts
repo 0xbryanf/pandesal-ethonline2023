@@ -1,14 +1,13 @@
 import { Router, Request, Response, NextFunction } from 'express';
+import { IGoogleUser, InitConfig } from '@/resources/googleOauth/googleOauth.interface';
+import { accessTokenCookieOptions, refreshTokenCookieOptions } from '@/utils/cookieOptions';
+import { precomputedContract, deployContract } from '@/utils/deployContract';
+import { signJwt } from '@/utils/token';
+import { ethers } from 'ethers';
 import Controller from '@/utils/interfaces/controller.interface';
 import GoogleOAuthService from '@/resources/googleOauth/googleOauth.service';
 import HttpException from '@/utils/exceptions/http.exception';
-import { IGoogleUser, InitConfig } from '@/resources/googleOauth/googleOauth.interface';
-import { signJwt } from '@/utils/token';
-import { accessTokenCookieOptions, refreshTokenCookieOptions } from '@/utils/cookieOptions';
-import { utf8ToBytes } from "ethereum-cryptography/utils";
-import { sha256 } from 'ethereum-cryptography/sha256';
-import { ethers } from 'ethers';
-import { precomputedContract, deployGoerliContract } from '@/utils/deployContract';
+import getOwnerAddress from '@/utils/getOwnerAddress';
 import axios from 'axios';
 
 class GoogleAuthController implements Controller {
@@ -32,9 +31,9 @@ class GoogleAuthController implements Controller {
             this.getAccount
         )
 
-        this.router.get(
-            `${this.path}/oauth/deploy-goerli-contract`,
-            this.goerliContract
+        this.router.post(
+            `${this.path}/oauth/deploy-contract`,
+            this.deployContract
         )
     }
 
@@ -77,7 +76,7 @@ class GoogleAuthController implements Controller {
             }
 
             const salt = ethers.utils.id(this.user.id).toString();
-            const ownerAddress = new ethers.Wallet(sha256(utf8ToBytes(this.user.email))).address.toString()
+            const ownerAddress = await getOwnerAddress(this.user.email);
             const contractAddress = await precomputedContract(ownerAddress, salt);
 
             const initConfig = {
@@ -93,37 +92,39 @@ class GoogleAuthController implements Controller {
         }
     }
 
-    private goerliContract = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+    private deployContract = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
         try {
+            const { network } = req.body;
+
             if (!this.user.verified_email) {
                 next(new HttpException(403, 'Google account is not verified'));
-                return;
             }
-
-            console.log('Initiating deployment to goerli network...')
-            const salt = ethers.utils.id(this.user.id).toString();
-            const ownerAddress = new ethers.Wallet(sha256(utf8ToBytes(this.user.email))).address.toString()
-            const goerliContractAddress = await deployGoerliContract(ownerAddress, salt)
-            console.log(`Contract succeffuly deployed to goerli network.`);
-            console.log(`Contract deployed to address: ${goerliContractAddress}`)
-            res.status(200).send(goerliContractAddress);
             
-            console.log(`Contract verification initiated..`)
+            const salt = ethers.utils.id(this.user.id).toString();
+            const ownerAddress = await getOwnerAddress(this.user.email.toString());
+            
+            console.log(`Deploying contract to ${network} network...`)
+            const contractAddress = await deployContract(ownerAddress, salt, network)
+
+            console.log(`Contract succeffuly deployed to ${network} network.`);
+            console.log(`Contract address: ${contractAddress}`)
+              
             const data = {
-                contractAddress: goerliContractAddress.toString(),
+                contractAddress: contractAddress.toString(),
                 args: [ownerAddress.toString()],
-                network: 'goerli'
+                network: network.toString()
             }
 
+            console.log(`Contract verification started...`)
             setTimeout(async () => {
-                await axios.post('http://localhost:2019/api/verification/goerli-contract', data)
+                await axios.post('http://localhost:2019/api/verification/verify-contract', data)
                     .catch((error) => {
                         console.error('Error:', error)
                     })
             }, 60000)
-            
+
+            res.status(200).send(contractAddress);
         } catch (error: any) {
-            console.error(error, 'Cannot get account');
             next(new HttpException(400, error.message))
         }
     }
