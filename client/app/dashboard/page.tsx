@@ -16,10 +16,10 @@ export default function Dashboard() {
       {/* Network Information */}
         <h1 className='text-3xl'>2. Deploy Your Account</h1>
         <div className="grid grid-cols-2 md:grid-cols-4 justify-items-stretch gap-4 mb-4">
-          <NetworkCard networkName='Goerli' />
-          <NetworkCard networkName='Sepolia'  />
-          <NetworkCard networkName='Mumbai' />
-          <NetworkCard networkName='Scroll' />
+          <NetworkCard networkName='goerli' />
+          <NetworkCard networkName='sepolia'  />
+          <NetworkCard networkName='maticmum' />
+          <NetworkCard networkName='scroll' />
         </div>
 
       {/* Group Information */}

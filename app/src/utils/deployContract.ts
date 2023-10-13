@@ -29,7 +29,7 @@ export const deployContract = async (ownerAddress: string, salt: string, network
             case 'sepolia':
                 provider = new ethers.providers.JsonRpcProvider(API_URL_SEPOLIA as string);
                 break;
-            case 'mumbai':
+            case 'maticmum':
                 provider = new ethers.providers.JsonRpcProvider(API_URL_MUMBAI as string);
                 break;
             default:
@@ -37,7 +37,6 @@ export const deployContract = async (ownerAddress: string, salt: string, network
         }
 
         const providerNetwork = await provider.getNetwork();
-
         if (network != providerNetwork.name) {
             throw new Error('Error getting network name');
         }
