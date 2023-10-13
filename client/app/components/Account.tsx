@@ -29,25 +29,25 @@ export default function Account() {
   }, []);
 
   return (
-    <div className="flex flex-row gap-4 mb-4">
+    <div className="flex flex-row overflow-x-auto gap-4 mb-4">
       <Card variant='outlined' sx={{ minWidth: 250 }}>
         <CardContent>
           <h2 className="text-xl">Email Address:</h2>
-          <p className='text-gray-500 text-sm py-2'>{email}</p>
+          <p className='text-gray-500 text-xs py-2'>{email}</p>
         </CardContent>
       </Card>
       
-      <Card variant='outlined' sx={{ minWidth: 250 }}>
+      <Card variant='outlined' sx={{ minWidth: 250, width: 'max-content' }}>
         <CardContent>
-          <h2 className="text-xl">Wallet Address</h2>
-          <p className='text-gray-500 text-sm py-2'>{wallet}</p>
+          <h2 className="text-xl">Wallet Address:</h2>
+          <p className='text-gray-500 text-xs py-2'>{wallet}</p>
         </CardContent>
       </Card>
       
-      <Card variant='outlined' sx={{ minWidth: 250 }}>
+      <Card variant='outlined' sx={{ minWidth: 250, width: 'max-content' }}>
         <CardContent>
           <h2 className="text-xl">Smart Account:</h2>
-          <p className='text-gray-500 text-sm py-2'>{contract}</p>
+          <p className='text-gray-500 text-xs py-2'>{contract}</p>
         </CardContent>
       </Card>
     </div>
