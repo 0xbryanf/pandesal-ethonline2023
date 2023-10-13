@@ -15,7 +15,7 @@ const GroupCard = ({name, description}: any) => {
   */
 
   return (
-    <Card variant='outlined' sx={{ minWidth: 250 }}>
+    <Card variant='outlined' sx={{ minWidth: 150 }}>
     <CardContent>
       <h2 className="text-xl flex justify-between items-center">
         {name}
@@ -26,7 +26,7 @@ const GroupCard = ({name, description}: any) => {
               name: name
             }
             }}
-          className='underline'
+          className='hover:text-pandesal-orange duration-100'
         >
           <ArrowOutwardIcon/>
         </Link>

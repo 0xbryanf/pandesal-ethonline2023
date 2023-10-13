@@ -11,7 +11,7 @@ const NavBar = () => {
       </div>
       {/* <div>NavCenter</div> */}
       <div className='flex gap-4'>
-        <button className='rounded px-3 py-1 border border-pandesal-orange text-pandesal-orange hover:text-white hover:bg-pandesal-orange/80 duration-100'>
+        <button className='rounded px-3 py-1 border border-pandesal-orange text-pandesal-orange'>
           <Link href='/#signup-form'>
             Log In
           </Link>

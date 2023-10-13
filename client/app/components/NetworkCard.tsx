@@ -26,9 +26,9 @@ export default function NetworkCard({ network }: any) {
     }
 
     return (
-        <Card variant='outlined' sx={{ minWidth: 250 }}>
+        <Card variant='outlined' sx={{ minWidth: 100 }}>
             <CardContent>
-                <h2 className="text-xl mb-5">{network}</h2>
+                <h2 className="text-xl">{network}</h2>
                 {deployStatus ? (
                     <p className='text-gray-500 text-sm py-2'>
                         Deployed! 🎉
@@ -36,7 +36,7 @@ export default function NetworkCard({ network }: any) {
                 ) : (
                     <>
                         <p className='text-gray-500 text-sm py-2'>Not yet deployed.</p>
-                        <button className='border border-pandesal-blue rounded p-2' onClick={action}>Deploy now</button>
+                        <button className='border border-pandesal-orange hover:bg-pandesal-orange text-pandesal-orange hover:text-white duration-100 text-xs rounded p-2' onClick={action}>Deploy now</button>
                     </>
                 )}
             </CardContent>
