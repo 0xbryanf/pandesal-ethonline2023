@@ -11,7 +11,7 @@ class VerifyContractController {
 
     initialiseRoutes() {
         this.router.post(
-            `${this.path}/goerli-contract`,
+            `${this.path}/verify-contract`,
             this.goerliContract
         )
     }
