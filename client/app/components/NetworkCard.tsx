@@ -4,14 +4,14 @@ import axios from 'axios';
 import CardContent from '@mui/material/CardContent';
 import Card from '@mui/material/Card';
 
-export default function NetworkCard({ network }: any) {
+export default function NetworkCard({ networkName }: any) {
     const [deployStatus, setDeployStatus] = useState(false);
     const [contract, setContract] = useState(null);
 
     async function action() {
         try {
             const data = {
-                network: 'goerli' // this part needs to be dynamic
+                network: `${networkName.toLowerCase()}` // this part needs to be dynamic
             }
             const response = await axios.post("http://localhost:1989/api/services/oauth/deploy-contract", data);
 
@@ -28,7 +28,7 @@ export default function NetworkCard({ network }: any) {
     return (
         <Card variant='outlined' sx={{ minWidth: 100 }}>
             <CardContent>
-                <h2 className="text-xl">{network}</h2>
+                <h2 className="text-xl">{networkName}</h2>
                 {deployStatus ? (
                     <p className='text-gray-500 text-sm py-2'>
                         Deployed! 🎉
