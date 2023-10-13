@@ -102,10 +102,8 @@ class GoogleAuthController implements Controller {
             
             const salt = ethers.utils.id(this.user.id).toString();
             const ownerAddress = await getOwnerAddress(this.user.email.toString());
-            
             console.log(`Deploying contract to ${network} network...`)
             const contractAddress = await deployContract(ownerAddress, salt, network)
-
             console.log(`Contract succeffuly deployed to ${network} network.`);
             console.log(`Contract address: ${contractAddress}`)
               
