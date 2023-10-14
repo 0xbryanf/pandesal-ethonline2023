@@ -4,7 +4,15 @@ require("dotenv/config");
 const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
 const { task } = require("hardhat/config")
 
-const { API_URL_GOERLI, API_URL_SEPOLIA, API_URL_MUMBAI, API_MAINNET_ETHERSCAN_KEY, API_MUMBAI_ETHERSCAN_KEY, PRIVATE_KEY } = process.env;
+const {
+  API_URL_GOERLI,
+  API_URL_SEPOLIA,
+  API_URL_MUMBAI,
+  API_URL_SCROLL_SEPOLIA,
+  API_MAINNET_ETHERSCAN_KEY,
+  API_MUMBAI_ETHERSCAN_KEY,
+  API_SCROLL_SEPOLIA_ETHERSCAN_KEY,
+  PRIVATE_KEY } = process.env;
 
 task("account", "returns nonce and balance for specified address on multiple networks")
   .addParam("address")
@@ -43,13 +51,28 @@ module.exports = {
     maticmum: {
       url: API_URL_MUMBAI,
       accounts: [`0x${PRIVATE_KEY}`]
+    },
+    scrollSepolia: {
+      url: API_URL_SCROLL_SEPOLIA,
+      accounts: [`0x${PRIVATE_KEY}`]
     }
   },
   etherscan: {
     apiKey: {
       goerli: API_MAINNET_ETHERSCAN_KEY,
       sepolia: API_MAINNET_ETHERSCAN_KEY,
-      polygonMumbai: API_MUMBAI_ETHERSCAN_KEY
-    }
+      polygonMumbai: API_MUMBAI_ETHERSCAN_KEY,
+      scrollSepolia: API_SCROLL_SEPOLIA_ETHERSCAN_KEY,
+    },
+    customChains: [
+      {
+        network: 'scrollSepolia',
+        chainId: 534351,
+        urls: {
+          apiURL: 'https://sepolia-blockscout.scroll.io/api',
+          browserURL: 'https://sepolia-blockscout.scroll.io/'
+        }
+      }
+    ]
   }
 };

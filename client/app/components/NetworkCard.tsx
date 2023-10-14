@@ -11,7 +11,7 @@ export default function NetworkCard({ networkName }: any) {
     async function action() {
         try {
             const data = {
-                network: `${networkName.toLowerCase()}` // this part needs to be dynamic
+                network: `${networkName}` // this part needs to be dynamic
             }
             const response = await axios.post("http://localhost:1989/api/services/oauth/deploy-contract", data);
 
