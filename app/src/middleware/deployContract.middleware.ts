@@ -21,9 +21,6 @@ export const precomputedContract = async (ownerAddress: string, salt: string): P
 export const deployContract = async (ownerAddress: string, salt: string, network: string): Promise<string> => {
     try {
         let provider;
-
-        console.log(network);
-
         switch (network) {
             case '5':
                 provider = new ethers.providers.JsonRpcProvider(API_URL_GOERLI as string);
@@ -42,8 +39,6 @@ export const deployContract = async (ownerAddress: string, salt: string, network
         }
 
         const providerNetwork = await provider.getNetwork();
-        console.log(providerNetwork.chainId);
-        
         if (network != providerNetwork.chainId.toString()) {
             throw new Error('Error getting network name');
         }
@@ -54,7 +49,7 @@ export const deployContract = async (ownerAddress: string, salt: string, network
         const factory = Factory.attach(FACTORY_ADDRESS as string);
         const deploy = await factory.deploy(initCode, salt);
         const txReceipt = await deploy.wait();
-        return `${txReceipt.events[0].address}`;
+        return `${txReceipt.events[0].args[0]}`;
     } catch (error: any) {
         console.error(error.message)
         throw new HttpException(400, error.message);
