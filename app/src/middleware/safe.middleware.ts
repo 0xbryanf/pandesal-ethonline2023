@@ -2,81 +2,10 @@ import { ethers } from 'ethers';
 import SafeApiKit from '@safe-global/api-kit';
 import Safe, { EthersAdapter, SafeAccountConfig, SafeFactory, getSafeContract } from '@safe-global/protocol-kit';
 import { GelatoRelayPack } from '@safe-global/relay-kit';
-import { MetaTransactionData, MetaTransactionOptions, OperationType, SafeMultisigTransactionResponse, SafeSignature, TransactionOptions } from '@safe-global/safe-core-sdk-types'
+import { MetaTransactionData, MetaTransactionOptions, OperationType, SafeMultisigTransactionResponse, TransactionOptions } from '@safe-global/safe-core-sdk-types'
 import 'dotenv/config';
 
-
-const { API_URL_GOERLI, ALCHEMY_GOERLI_API, API_URL_INFURA, API_URL_SEPOLIA, API_URL_MUMBAI, API_URL_SCROLL_SEPOLIA, GELATO_RELAY_API_KEY, SIGNER1, SIGNER2, SIGNER3, SAFE_ADDRESS } = process.env;
-
-export const createSafe = async (): Promise<void> => {
-    try {
-        console.log("Initializing provider...")
-        const provider = new ethers.providers.JsonRpcProvider(ALCHEMY_GOERLI_API as string);
-        const gasData = await provider.getFeeData();
-
-        let gasDetails = {
-            gasPrice: ethers.BigNumber.from(gasData.gasPrice),
-            maxFeePerGas: ethers.BigNumber.from(gasData.maxFeePerGas),
-            maxPriorityFeePerGas: ethers.BigNumber.from(gasData.maxPriorityFeePerGas)
-        }
-
-        const signer1 = new ethers.Wallet(SIGNER1 as string, provider);
-        const signer2 = new ethers.Wallet(SIGNER2 as string, provider);
-        const signer3 = new ethers.Wallet(SIGNER3 as string, provider);
-        
-        console.log("ethAdapterSigner1 created.")
-        const ethAdapterSigner1 = new EthersAdapter({
-            ethers,
-            signerOrProvider: signer1
-        })
-
-        const txServiceUrl = 'https://safe-transaction-goerli.safe.global'
-        const safeService = new SafeApiKit({ txServiceUrl, ethAdapter: ethAdapterSigner1 })
-
-        console.log("safeFactory created.")
-        const safeFactory = await SafeFactory.create({ ethAdapter: ethAdapterSigner1 });
-        const safeAccountConfig: SafeAccountConfig = {
-            owners: [
-                await signer1.getAddress(),
-                await signer2.getAddress(),
-                await signer3.getAddress()
-            ],
-            threshold: 2,
-        }
-     
-
-        const options: TransactionOptions = {
-            gasPrice: gasDetails.gasPrice._hex,
-            gasLimit: 200000,
-        }
-
-        const safeSdkOwner1 = await safeFactory.deploySafe({ safeAccountConfig, options: options })
-        const safeAddress = await safeSdkOwner1.getAddress();
-
-        console.log(`https://goerli.etherscan.io/address/${safeAddress}`)
-        console.log(`https://app.safe.global/gor:${safeAddress}`)
-
-       
-    } catch (error: any) {
-        throw new Error(error)
-    }
-}
-
-const fundSafe = async (safeAddress: string, signer1: ethers.Wallet): Promise<void> => {
-    const safeAmount = ethers.utils.parseUnits('0.01', 'ether').toHexString()
-    
-    const transactionParameters = {
-        to: safeAddress,
-        value: safeAmount,
-    }
-
-    const tx = await signer1.sendTransaction(transactionParameters)
-    console.log('Fundraising.')
-    console.log(`Deposit Transaction: https://goerli.etherscan.io/tx/${tx.hash}`)
-}
-
-
-const main = async (network: string, amount: string, destinationAddress: string, digest: string ): Promise<void> => {
+const mutliSigTransaction = async (network: string, amount: string, destinationAddress: string, digest: string ): Promise<void> => {
     try {
 
         console.log('Request for multisignature transaction received.')
@@ -117,7 +46,7 @@ const main = async (network: string, amount: string, destinationAddress: string,
 
         const safeSdkSigner1 = await Safe.create({
             ethAdapter: ethAdapterSigner1,
-            safeAddress: SAFE_ADDRESS as string,
+            safeAddress: process.env.SAFE_ADDRESS as string,
         })
         
         const safeService = new SafeApiKit({ txServiceUrl, ethAdapter: ethAdapterSigner1 });
@@ -139,7 +68,7 @@ export const createTransaction = async (safeSdkSigner1: Safe, safeTransactionDat
         const safeTxHash = await safeSdkSigner1.getTransactionHash(safeTransaction);
         const signer1Signature = await safeSdkSigner1.signTransactionHash(safeTxHash);
         await safeService.proposeTransaction({
-            safeAddress: SAFE_ADDRESS as string,
+            safeAddress: process.env.SAFE_ADDRESS as string,
             safeTransactionData: safeTransaction.data,
             safeTxHash,
             senderAddress: await signer1.getAddress(),
@@ -246,13 +175,73 @@ export const execTransaction = async (encodedTx: string, chainId: number, option
     }
 }
 
+export const createSafe = async (): Promise<void> => {
+    try {
+        console.log("Initializing provider...")
+        const provider = new ethers.providers.JsonRpcProvider(process.env.API_URL_GOERLI as string);
+        const gasData = await provider.getFeeData();
 
-export default {createSafe, fundSafe, createTransaction, firstConfirmation, secondConfirmation }
+        let gasDetails = {
+            gasPrice: ethers.BigNumber.from(gasData.gasPrice),
+            maxFeePerGas: ethers.BigNumber.from(gasData.maxFeePerGas),
+            maxPriorityFeePerGas: ethers.BigNumber.from(gasData.maxPriorityFeePerGas)
+        }
+
+        const signer1 = new ethers.Wallet(process.env.OWNER_1_PRIVATE_KEY as string, provider);
+        const signer2 = new ethers.Wallet(process.env.OWNER_2_PRIVATE_KEY as string, provider);
+        const signer3 = new ethers.Wallet(process.env.OWNER_3_PRIVATE_KEY as string, provider);
+        
+        console.log("ethAdapterSigner1 created.")
+        const ethAdapterSigner1 = new EthersAdapter({
+            ethers,
+            signerOrProvider: signer1
+        })
+
+        const txServiceUrl = 'https://safe-transaction-goerli.safe.global'
+        const safeService = new SafeApiKit({ txServiceUrl, ethAdapter: ethAdapterSigner1 })
+
+        console.log("safeFactory created.")
+        const safeFactory = await SafeFactory.create({ ethAdapter: ethAdapterSigner1 });
+        const safeAccountConfig: SafeAccountConfig = {
+            owners: [
+                await signer1.getAddress(),
+                await signer2.getAddress(),
+                await signer3.getAddress()
+            ],
+            threshold: 2,
+        }
+     
+
+        const options: TransactionOptions = {
+            gasPrice: gasDetails.gasPrice._hex,
+            gasLimit: 200000,
+        }
+
+        const safeSdkOwner1 = await safeFactory.deploySafe({ safeAccountConfig, options: options })
+        const safeAddress = await safeSdkOwner1.getAddress();
+
+        console.log(`https://goerli.etherscan.io/address/${safeAddress}`)
+        console.log(`https://app.safe.global/gor:${safeAddress}`)
+
+       
+    } catch (error: any) {
+        throw new Error(error)
+    }
+}
+
+const fundSafe = async (safeAddress: string, signer1: ethers.Wallet): Promise<void> => {
+    const safeAmount = ethers.utils.parseUnits('0.01', 'ether').toHexString()
+    
+    const transactionParameters = {
+        to: safeAddress,
+        value: safeAmount,
+    }
+
+    const tx = await signer1.sendTransaction(transactionParameters)
+    console.log('Fundraising.')
+    console.log(`Deposit Transaction: https://goerli.etherscan.io/tx/${tx.hash}`)
+}
 
 
-main("5", "0.0001", '0x3E91bE3C8E9E4cEED8Ed1249F1537A402C8b1AF6', '0x')
-    .catch((error) => {
-        console.log(error);
-    })
-
+export default {createSafe, fundSafe, mutliSigTransaction, createTransaction, firstConfirmation, secondConfirmation }
 
