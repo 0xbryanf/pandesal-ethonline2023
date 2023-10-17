@@ -15,8 +15,9 @@ export default function NetworkCard({ networkName }: any) {
                 network: `${networkName}` // this part needs to be dynamic
             }
             setLoading(true);
+            console.log('Deploying to: ', data);
             const response = await axios.post("http://localhost:1989/api/services/oauth/deploy-contract", data);
-            console.log(response)
+            console.log('Console response: ', response);
 
             if (response.data) {
                 setContract(response.data);
@@ -46,7 +47,7 @@ export default function NetworkCard({ networkName }: any) {
                 ) : (
                     <>
                         <p className='text-gray-500 text-sm py-2'>Not yet deployed.</p>
-                        <button className='border border-pandesal-orange hover:bg-pandesal-orange text-pandesal-orange hover:text-white duration-100 text-xs rounded p-2' disabled={loading ? true : false} onClick={action}>{!loading ? 'Deploy now' : 'Loading...'}</button>
+                        <button className={`border border-pandesal-orange text-pandesal-orange duration-100 text-xs rounded p-2 ${!loading && 'hover:bg-pandesal-orange hover:text-white'}`} disabled={loading ? true : false} onClick={action}>{!loading ? 'Deploy now' : 'Loading...'}</button>
                     </>
                 )}
             </CardContent>

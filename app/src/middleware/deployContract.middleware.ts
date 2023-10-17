@@ -49,7 +49,12 @@ export const deployContract = async (ownerAddress: string, salt: string, network
         const factory = Factory.attach(FACTORY_ADDRESS as string);
         const deploy = await factory.deploy(initCode, salt);
         const txReceipt = await deploy.wait();
-        return `${txReceipt.events[0].args[0]}`;
+        console.log(txReceipt.events[0]);
+        const txReceiptData = txReceipt.events[0].data;
+        const contractAddress = txReceiptData.replace(/^0x0*/, '0x');
+        console.log(contractAddress)
+        // return `${txReceipt.events[0].args[0]}`;
+        return contractAddress;
     } catch (error: any) {
         console.error(error.message)
         throw new HttpException(400, error.message);
