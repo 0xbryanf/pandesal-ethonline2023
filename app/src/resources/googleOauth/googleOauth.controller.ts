@@ -1,14 +1,18 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import { IGoogleUser, InitConfig } from '@/resources/googleOauth/googleOauth.interface';
 import { accessTokenCookieOptions, refreshTokenCookieOptions } from '@/utils/cookieOptions';
-import { precomputedContract, deployContract } from '@/utils/deployContract';
+import { precomputedContract, deployContract } from '@/middleware/deployContract.middleware';
 import { signJwt } from '@/utils/token';
 import { ethers } from 'ethers';
+import Web3 from 'web3';
 import Controller from '@/utils/interfaces/controller.interface';
 import GoogleOAuthService from '@/resources/googleOauth/googleOauth.service';
 import HttpException from '@/utils/exceptions/http.exception';
-import getOwnerAddress from '@/utils/getOwnerAddress';
+import { getWalletAddress } from '@/utils/credentials';
 import axios from 'axios';
+import { signMessage } from '@/middleware/signMessage.middleware';
+import verifyMessage from '@/middleware/verifyMessage.middleware';
+
 
 class GoogleAuthController implements Controller {
     public path = '/services';
@@ -33,6 +37,7 @@ class GoogleAuthController implements Controller {
 
         this.router.post(
             `${this.path}/oauth/deploy-contract`,
+            this.signMessage,
             this.deployContract
         )
     }
@@ -76,7 +81,7 @@ class GoogleAuthController implements Controller {
             }
 
             const salt = ethers.utils.id(this.user.id).toString();
-            const ownerAddress = await getOwnerAddress(this.user.email);
+            const ownerAddress = await getWalletAddress(this.user.email);
             const contractAddress = await precomputedContract(ownerAddress, salt);
 
             const initConfig = {
@@ -101,11 +106,8 @@ class GoogleAuthController implements Controller {
             }
             
             const salt = ethers.utils.id(this.user.id).toString();
-            const ownerAddress = await getOwnerAddress(this.user.email.toString());
-            
-            console.log(`Deploying contract to ${network} network...`)
+            const ownerAddress = await getWalletAddress(this.user.email);
             const contractAddress = await deployContract(ownerAddress, salt, network)
-
             console.log(`Contract succeffuly deployed to ${network} network.`);
             console.log(`Contract address: ${contractAddress}`)
               
@@ -126,6 +128,21 @@ class GoogleAuthController implements Controller {
             res.status(200).send(contractAddress);
         } catch (error: any) {
             next(new HttpException(400, error.message))
+        }
+    }
+
+    private signMessage = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+        try {
+            const walletAddress = await getWalletAddress(this.user.email.toString());
+            const signature = await signMessage(this.user.email, walletAddress, process.env.API_URL_GOERLI as string, process.env.FACTORY_ADDRESS as string, 5, "deploy account");
+            const result = await verifyMessage(process.env.API_URL_GOERLI as string, walletAddress, signature.message as string, signature.v, signature.r, signature.s);
+            if (result) {
+                next()
+            } else {
+                res.status(401).json({ message: "Message verification failed" });
+            }
+        } catch (error: any) {
+            console.error(error.message);
         }
     }
 }
