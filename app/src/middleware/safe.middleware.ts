@@ -3,23 +3,31 @@ import SafeApiKit from '@safe-global/api-kit';
 import Safe, { EthersAdapter, SafeAccountConfig, SafeFactory, getSafeContract } from '@safe-global/protocol-kit';
 import { GelatoRelayPack } from '@safe-global/relay-kit';
 import { MetaTransactionData, MetaTransactionOptions, OperationType, SafeMultisigTransactionResponse, TransactionOptions } from '@safe-global/safe-core-sdk-types'
+import axios from 'axios';
 import 'dotenv/config';
 
-const mutliSigTransaction = async (network: string, amount: string, destinationAddress: string, digest: string ): Promise<void> => {
+export const mutliSigTransaction = async (network: string, amount: string, destinationAddress: string, digest: string ): Promise<Boolean> => {
     try {
 
         console.log('Request for multisignature transaction received.')
         let provider;
         let txServiceUrl: string = "";
+
         switch (network) {
             case '5':
                 console.log('Initiated safe transaction at Goerli network.')
-                provider = new ethers.providers.JsonRpcProvider(process.env.ALCHEMY_GOERLI_API as string);
+                provider = new ethers.providers.JsonRpcProvider(process.env.API_URL_GOERLI as string);
                 txServiceUrl = 'https://safe-transaction-goerli.safe.global';
                 break;
             default:
                 throw new Error('Unsupported network');
         }
+
+        const providerNetwork = await provider.getNetwork();
+        if (network != providerNetwork.chainId.toString()) {
+            throw new Error('Error getting network name');
+        }
+        
 
         console.log('Initiated signers...')
         const signer1 = new ethers.Wallet(process.env.OWNER_1_PRIVATE_KEY as string, provider);
@@ -27,6 +35,7 @@ const mutliSigTransaction = async (network: string, amount: string, destinationA
         const signer3 = new ethers.Wallet(process.env.OWNER_3_PRIVATE_KEY as string, provider);
         const withdrawAmount = ethers.utils.parseUnits(amount, 'ether').toString();
 
+        console.log('safeTransaction data initiated.')
         const safeTransactionData: MetaTransactionData = {
             to: destinationAddress,
             data: digest,
@@ -34,27 +43,37 @@ const mutliSigTransaction = async (network: string, amount: string, destinationA
             operation: OperationType.Call
         }
 
+        console.log('options for metatransaction initiated.')
         const options: MetaTransactionOptions = {
             gasLimit: "200000",
             isSponsored: true
         }
 
+        console.log('ethAdapterSigner1 created.')
         const ethAdapterSigner1 = new EthersAdapter({
             ethers,
             signerOrProvider: signer1
         })
 
+        console.log('safeSdkSigner1 created.')
         const safeSdkSigner1 = await Safe.create({
             ethAdapter: ethAdapterSigner1,
             safeAddress: process.env.SAFE_ADDRESS as string,
         })
-        
+
+        console.log('safeService available.')
         const safeService = new SafeApiKit({ txServiceUrl, ethAdapter: ethAdapterSigner1 });
 
+        console.log('Create safe transaction started.')
         const transactionHash = await createTransaction(safeSdkSigner1, safeTransactionData, safeService, signer1);
+        console.log('Creation of safe transaction done, ready for first confirmation.')
         const safeTransaction2 = await firstConfirmation(transactionHash, signer2, safeService);
+        console.log('First confirmation done, ready for second confirmation.')
         const encodedTx = await secondConfirmation(signer2, safeTransaction2)
-        await execTransaction(encodedTx, parseInt(network), options);
+        console.log('Second confirmation done, ready for execution.')
+        const isSuccess = await execTransaction(encodedTx, parseInt(network), options);
+        console.log('Execution success')
+        return isSuccess;
     } catch (error: any) {
         console.log("Failed to initialize safe transaction");
         throw new Error(error)
@@ -125,7 +144,6 @@ export const secondConfirmation = async (signer2: ethers.Wallet, safeTransaction
         })
 
         const signedSafeTx = await safeSdkSigner3.signTransaction(safeTransaction2);
-        console.log('signedSafeTx', signedSafeTx);
 
         const safeSingletonContract = await getSafeContract({
             ethAdapter: ethAdapterOwner3,
@@ -155,7 +173,7 @@ export const secondConfirmation = async (signer2: ethers.Wallet, safeTransaction
 
 }
 
-export const execTransaction = async (encodedTx: string, chainId: number, options: MetaTransactionOptions): Promise<void> => {
+export const execTransaction = async (encodedTx: string, chainId: number, options: MetaTransactionOptions): Promise<boolean> => {
     try {
         console.log('Execution of safe transaction started...')
         const relayTransaction = {
@@ -169,6 +187,30 @@ export const execTransaction = async (encodedTx: string, chainId: number, option
         const relayKit = new GelatoRelayPack(process.env.GELATO_RELAY_API_KEY as string)
         const response = await relayKit.relayTransaction(relayTransaction)
         console.log(`Relay Transaction Task ID: https://relay.gelato.digital/tasks/status/${response.taskId}`)
+
+        while (true) {
+            const result = await axios.get(`https://relay.gelato.digital/tasks/status/${response.taskId}`);
+            const taskState = result.data.task.taskState;
+
+            if (taskState === 'ExecSuccess') {
+                console.log('Relay transaction is success.')
+                return true
+            } else if (taskState === 'CheckPending') {
+                console.log('Checking for pending transaction.');
+                await new Promise((resolve) => setTimeout(resolve, 10000))
+            } else if (taskState === 'ExecPending') {
+                console.log('Executing pending transaction.');
+                await new Promise((resolve) => setTimeout(resolve, 10000))
+            } else if (taskState === 'WaitingForConfirmation') {
+                console.log('Waiting for confirmation.');
+                await new Promise((resolve) => setTimeout(resolve, 10000))
+            } else if (taskState === 'Cancelled') {
+                console.log('Relay transaction was cancelled.');
+                return false;
+            } else {
+                console.log('Unexpected task state:', taskState);
+            }
+        }
     } catch (error: any) {
         console.log("Failed to execute safe transaction.")
         throw new Error(error)
@@ -229,7 +271,7 @@ export const createSafe = async (): Promise<void> => {
     }
 }
 
-const fundSafe = async (safeAddress: string, signer1: ethers.Wallet): Promise<void> => {
+export const fundSafe = async (safeAddress: string, signer1: ethers.Wallet): Promise<void> => {
     const safeAmount = ethers.utils.parseUnits('0.01', 'ether').toHexString()
     
     const transactionParameters = {

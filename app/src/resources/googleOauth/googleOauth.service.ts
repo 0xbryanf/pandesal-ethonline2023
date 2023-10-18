@@ -3,6 +3,7 @@ import HttpException from '@/utils/exceptions/http.exception';
 import axios from 'axios';
 import queryString from 'querystring';
 
+
 class GoogleOAuthService {
     public async getGoogleOAuthTokens({ code }: { code: string }): Promise<IGoogleToken> {
         const url = 'https://oauth2.googleapis.com/token';
@@ -54,6 +55,7 @@ class GoogleOAuthService {
         const sessionJSON = JSON.stringify(session);
         return sessionJSON;
     }
+
 }
 
 export default GoogleOAuthService;
