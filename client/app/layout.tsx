@@ -15,7 +15,7 @@ export const metadata = {
 export default function RootLayout({ children }: any) {
   return (
     <html lang="en">
-      <body className={inter.className + ' h-screen box-border'}>
+      <body className={inter.className + ' min-h-screen box-border'}>
       <Suspense fallback={<Loading/>}>
         <LogInProvider>
 
