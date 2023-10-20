@@ -1,6 +1,6 @@
 "use client"
 import React, { useState } from 'react';
-import SubjectIcon from '@mui/icons-material/Subject';
+import AccountCircle from '@mui/icons-material/AccountCircle';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Link from 'next/link';
@@ -19,7 +19,7 @@ export default function NavMenu() {
 
   return (
     <div>
-      <SubjectIcon onClick={handleOpen} className='hover:cursor-pointer'/>
+      <AccountCircle onClick={handleOpen} className='hover:cursor-pointer'/>
       <Menu
         anchorEl={anchorEl}
         open={open}
