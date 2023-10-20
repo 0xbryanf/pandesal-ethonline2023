@@ -1,6 +1,6 @@
 'use client'
-
-import React, { useState } from 'react'
+import React, { useState, } from 'react';
+import { useRouter } from 'next/navigation';
 import NavMenu from './NavMenu';
 import Link from 'next/link';
 import googleOauth from '@/utils/googleOauth';
@@ -8,10 +8,14 @@ import { useUser } from "../context/LogInContext";
 
 const NavBar = () => {
   const { isUserSignedIn, signIn, signOut } = useUser();
+  const router = useRouter();
 
   const handleSignIn = () => {
-    googleOauth();
+    router.push(googleOauth());
     signIn();
+    /**
+     * @todo: Make signin state persist between refreshes
+     */
   }
 
   return (
@@ -20,7 +24,14 @@ const NavBar = () => {
         <Link href="/" className='text-pandesal-orange uppercase font-bold'>Pandesal</Link>
       </div>
       {/* <div>NavCenter</div> */}
-      <div className='flex gap-4'>
+      <div className='flex gap-8 items-center'>
+        <Link href='/about' className='text-sm'>
+            About Us
+        </Link>
+        <Link href='/dashboard' className='text-sm'>
+            Dashboard
+        </Link>
+        {/* @todo: Remove this later when sign in state is fixed */}
         {isUserSignedIn ? ( 
             <NavMenu/>
           ) : (

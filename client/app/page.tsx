@@ -1,7 +1,11 @@
+'use client'
 import googleOauth from '@/utils/googleOauth';
-import Image from 'next/image'
+import Link from "next/link";
+// import { useUser } from "@/app/context/LogInContext";
 
 export default function Home() {
+  // const { isUserSignedIn, signIn, signOut } = useUser();
+
   return (
     <div
       className="flex min-h-screen box-border p-4 flex-col-reverse justify-center
@@ -52,7 +56,9 @@ export default function Home() {
         <p className='text-black'>
           Save the complex wallet setups and crypto jargon for later. Join the blockchain revolution instantly.
         </p>
-        <a className='bg-pandesal-orange rounded px-6 py-1 hover:shadow-md duration-100 text-xl' href={googleOauth()}>Sign Up With Google</a>
+        <a className='bg-pandesal-orange rounded px-6 py-1 hover:shadow-md duration-100 text-xl' href={googleOauth()}>
+          Sign Up With Google
+        </a>
       </div>
     </div>
   )

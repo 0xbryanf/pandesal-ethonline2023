@@ -40,11 +40,6 @@ export default function NavMenu() {
           </Link>
             
         </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <Link href='/about'>
-            About Us
-          </Link>
-        </MenuItem>
       </Menu>
     </div>
   )

@@ -25,9 +25,9 @@ const GroupCard = ({name, description}: any) => {
             query: {
               name: name
             }
-            }}
+          }}
           className='hover:text-pandesal-orange duration-100'
-        >
+          >
           <ArrowOutwardIcon/>
         </Link>
       </h2>
