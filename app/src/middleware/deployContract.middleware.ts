@@ -49,7 +49,7 @@ export const deployContract = async (ownerAddress: string, salt: string, network
         const factory = Factory.attach(FACTORY_ADDRESS as string);
         const deploy = await factory.deploy(initCode, salt);
         const txReceipt = await deploy.wait();
-        console.log(txReceipt.events[0]);
+        console.log(txReceipt);
         const txReceiptData = txReceipt.events[0].data;
         const contractAddress = txReceiptData.replace(/^0x0*/, '0x');
         console.log(contractAddress)
