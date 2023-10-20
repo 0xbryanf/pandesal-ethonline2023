@@ -19,11 +19,11 @@ export default function Dashboard() {
     <div className="flex box-border flex-col px-4 lg:px-24 py-12 gap-8">
       <h1 className='text-3xl'>Welcome to your dashboard!</h1>
       {/* Personal Information */}
-        <h2 className='text-2xl'>1. Create Your Account</h2>
+        <h2 className='text-2xl'>🍞 Create Your Account</h2>
         <Account/>
 
       {/* Network Information */}
-        <h2 className='text-2xl'>2. Deploy Your Account</h2>
+        <h2 className='text-2xl'>🚀 Deploy Your Account</h2>
         <Box sx={{ width: '100% '}}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <Tabs value={network} onChange={handleChange} aria-label="Network Switcher">
