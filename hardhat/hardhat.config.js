@@ -45,19 +45,19 @@ module.exports = {
     hardhat: {},
     goerli: {
       url: API_URL_GOERLI,
-      accounts: [`0x${PRIVATE_KEY_FACTORY_ADDRESS}`],
+      accounts: [`0x${PRIVATE_KEY_RELAYER_ADDRESS}`],
     },
     sepolia: {
       url: API_URL_SEPOLIA,
-      accounts: [`0x${PRIVATE_KEY_FACTORY_ADDRESS}`],
+      accounts: [`0x${PRIVATE_KEY_RELAYER_ADDRESS}`],
     },
     maticmum: {
       url: API_URL_MUMBAI,
-      accounts: [`0x${PRIVATE_KEY_FACTORY_ADDRESS}`]
+      accounts: [`0x${PRIVATE_KEY_RELAYER_ADDRESS}`]
     },
     scrollSepolia: {
       url: API_URL_SCROLL_SEPOLIA,
-      accounts: [`0x${PRIVATE_KEY_FACTORY_ADDRESS}`]
+      accounts: [`0x${PRIVATE_KEY_RELAYER_ADDRESS}`]
     }
   },
   etherscan: {

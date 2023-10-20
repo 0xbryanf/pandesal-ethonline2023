@@ -4,7 +4,7 @@ import { numericString, salt } from '@/utils/nonce';
 import { IProposal } from '@/utils/interfaces/IProposal.interface';
 import "dotenv/config";
 
-const { API_URL_SEPOLIA, API_URL_MUMBAI, API_URL_SCROLL_SEPOLIA, PRIVATE_KEY, FACTORY_ADDRESS } = process.env;
+const { API_URL_SEPOLIA, API_URL_MUMBAI, API_URL_SCROLL_SEPOLIA, FACTORY_ADDRESS } = process.env;
 
 export const proposal = async (network: string, amount:string, destinationAddress: string, digest: string): Promise<IProposal[]> => {
     let provider: any;
