@@ -12,14 +12,10 @@ const NavBar = () => {
 
   const handleSignIn = () => {
     router.push(googleOauth());
-    signIn();
-    /**
-     * @todo: Make signin state persist between refreshes
-     */
   }
 
   return (
-    <nav className='flex flex-row px-6 py-3 justify-between items-center w-full'>
+    <nav className='flex flex-row px-6 py-3 justify-between items-center w-full bg-gray-100'>
       <div className='flex gap-3'>
         <Link href="/" className='text-pandesal-orange uppercase font-bold'>Pandesal</Link>
       </div>
@@ -28,10 +24,6 @@ const NavBar = () => {
         <Link href='/about' className='text-sm'>
             About Us
         </Link>
-        <Link href='/dashboard' className='text-sm'>
-            Dashboard
-        </Link>
-        {/* @todo: Remove this later when sign in state is fixed */}
         {isUserSignedIn ? ( 
             <NavMenu/>
           ) : (

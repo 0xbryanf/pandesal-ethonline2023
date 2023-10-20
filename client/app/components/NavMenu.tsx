@@ -30,9 +30,9 @@ export default function NavMenu() {
         }}
         transformOrigin={{
           vertical: 'top',
-          horizontal: 'left',
+          horizontal: 'center',
         }}
-        className='my-2'
+        className='my-3'
       >
         <MenuItem onClick={handleClose}>
           <Link href='/dashboard'>
