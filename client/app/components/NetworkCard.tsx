@@ -19,6 +19,11 @@ export default function NetworkCard({ networkId }: any) {
      * @todo: fetch signed-in user's groups that are a part of this network    
      */
     }, [])
+
+    const networkName = networkId === '5' ? 'Goerli'
+    : networkId === '11155111' ? 'Sepolia'
+    : networkId === '80001' ? 'Mumbai'
+    : 'Scroll'
     
 
     async function action() {
@@ -52,14 +57,10 @@ export default function NetworkCard({ networkId }: any) {
     return (
         <>
         {confirming && <SignMessage confirming={confirming} setConfirming={setConfirming} />}
-        <Card variant='outlined' sx={{ minWidth: 100 }}>
+        <Card variant='outlined' sx={{ minWidth: 100 }} className='shadow-md'>
             <CardContent>
                 <h2 className="text-xl">
-                    {networkId === '5' ? 'Goerli'
-                    : networkId === '11155111' ? 'Sepolia'
-                    : networkId === '80001' ? 'Mumbai'
-                    : 'Scroll'
-                }
+                    {networkName}
                 </h2>
                 {deployStatus ? (
                     <p className='text-gray-500 text-sm py-2'>
@@ -75,7 +76,7 @@ export default function NetworkCard({ networkId }: any) {
         </Card>
 
         {/* Group Information */}
-        <h1 className='text-3xl'>3. Create or Join a Group</h1>
+        <h2 className='text-2xl'>3. Create or Join a Group in {networkName}</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 justify-items-stretch gap-4 mb-4">
           
           {/**
@@ -91,11 +92,7 @@ export default function NetworkCard({ networkId }: any) {
             })
         ) : (
             <>
-                <GroupCard name={`${networkId === '5' ? 'Goerli Jam'
-                    : networkId === '11155111' ? 'Sepolia Jam'
-                    : networkId === '80001' ? 'Mumbai Jam'
-                    : 'Scroll Jam'
-                }`} description='Lorem, ipsum dolor.' />
+                <GroupCard name={networkName + ' Jam'} description='Lorem, ipsum dolor.' />
                 <GroupCard name='Create New Group' description='' />  {/* Change this element later */}
             </>
             )

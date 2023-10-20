@@ -18,10 +18,19 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  /* background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb)); */
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(210, 50%, 77%);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2F5D8C;
+  border-radius: 5px;
 }

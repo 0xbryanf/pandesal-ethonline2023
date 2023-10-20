@@ -16,14 +16,14 @@ export default function Dashboard() {
 
 
   return (
-    <div className="flex box-border flex-col px-4 lg:px-24 py-8 bg-pandesal-grey/20 gap-8">
-
+    <div className="flex box-border flex-col px-4 lg:px-24 py-12 gap-8">
+      <h1 className='text-3xl'>Welcome to your dashboard!</h1>
       {/* Personal Information */}
-        <h1 className='text-3xl'>1. Create Your Account</h1>
+        <h2 className='text-2xl'>1. Create Your Account</h2>
         <Account/>
 
       {/* Network Information */}
-        <h1 className='text-3xl'>2. Deploy Your Account</h1>
+        <h2 className='text-2xl'>2. Deploy Your Account</h2>
         <Box sx={{ width: '100% '}}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <Tabs value={network} onChange={handleChange} aria-label="Network Switcher">

@@ -15,7 +15,7 @@ const GroupCard = ({name, description}: any) => {
   */
 
   return (
-    <Card variant='outlined' sx={{ minWidth: 150 }}>
+    <Card variant='outlined' sx={{ minWidth: 150 }} className='shadow-md'>
     <CardContent>
       <h2 className="text-xl flex justify-between items-center">
         {name}

@@ -2,13 +2,13 @@ import Image from 'next/image'
 
 export default function About() {
   return (
-    <div className='flex min-h-screen box-border flex-col px-8 md:px-24 py-8 bg-pandesal-grey/20 gap-4'>
+    <div className='flex min-h-screen box-border flex-col px-8 md:px-24 py-8 gap-4'>
       <h1 className='text-3xl'>About Pandesal</h1>
       <Image 
         src='/images/hero-bg.png' 
         alt={''}
-        width={1280}
-        height={250}
+        width={1360}
+        height={800}
         className='self-center'
         />
       <h1 className="text-2xl">
