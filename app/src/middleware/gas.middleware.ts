@@ -13,8 +13,8 @@ interface IgasData {
     }
 }
 
-export const estimateGas = async (sender: string, factoryAddress: string, abi: any, params: string[] ): Promise<IgasData> => {
-    const provider = new ethers.providers.JsonRpcProvider(process.env.API_URL_GOERLI as string);
+export const estimateGas = async (sender: string, factoryAddress: string, provider_url: string, abi: any, params: string[] ): Promise<IgasData> => {
+    const provider = new ethers.providers.JsonRpcProvider(provider_url as string);
     const contract = new ethers.Contract(factoryAddress, abi, provider);
     let raw_gasLimit = await contract.estimateGas.deploy(...params, {
         from: sender, 

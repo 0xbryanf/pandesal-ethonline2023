@@ -1,34 +1,37 @@
 import { ethers } from 'ethers';
 import { bytecode } from '@/utils/artifacts/contracts/Base.sol/Base.json';
 import artifacts from '@/utils/artifacts/contracts/ContractFactory.sol/ContractFactory.json';
+import relayerArifacts from '@/utils/artifacts/contracts/Relayer.sol/Relayer.json';
 import { encoder, create2Address } from '@/utils/create2';
 import HttpException from '@/utils/exceptions/http.exception';
 import { estimateGas } from '@/middleware/gas.middleware';
 import { mutliSigTransaction } from '@/middleware/safe.middleware';
 import { proposal } from '@/middleware/proposal.middleware';
+import MerkleTree from '@/middleware/merkleTree.middleware';
+import { verifyProof } from '@/middleware/verify.middleware';
 
 import "dotenv/config";
 import { IProposal } from '@/utils/interfaces/IProposal.interface';
 import { verifyProposal } from './verify.middleware';
 
-const { API_URL_GOERLI, API_URL_SEPOLIA, API_URL_MUMBAI, API_URL_SCROLL_SEPOLIA, PRIVATE_KEY, FACTORY_ADDRESS } = process.env;
+const { API_URL_GOERLI, API_URL_SEPOLIA, API_URL_MUMBAI, API_URL_SCROLL_SEPOLIA, EXECUTOR, PRIV_KEY, RELAYER_CONTRACT, FACTORY_ADDRESS } = process.env;
         
 export const precomputedContract = async (ownerAddress: string, salt: string): Promise<string> => {
     try {
-        const initCode = bytecode + await encoder(["address"], [ownerAddress]);
-        return await create2Address(FACTORY_ADDRESS as string, salt, initCode);
+        const initCode: string = bytecode + await encoder(["address"], [ownerAddress]);
+        const precomputedAddress: string = await create2Address(FACTORY_ADDRESS as string, salt, initCode);
+        return precomputedAddress;
     } catch (error: any) {
         console.error(error, 'Cannot create precomputed address');
         throw new HttpException(400, error.message);
     }
 }
 
-export const deployContract = async (ownerAddress: string, salt: string, network: string): Promise<string> => {
+export const deployContract = async (ownerAddress: string, ownerKey: string, salt: string, network: string): Promise<string> => {
     console.log(`Deployment of contract initiated to network ${network}`);
     try {
-        let provider;
-        let success;
-        let contractAddress: string = "";
+        let provider: ethers.providers.JsonRpcProvider; 
+        
         switch (network) {
             case '5':
                 provider = new ethers.providers.JsonRpcProvider(API_URL_GOERLI as string);
@@ -46,45 +49,122 @@ export const deployContract = async (ownerAddress: string, salt: string, network
                 throw new Error('Unsupported network');
         }
 
-        const providerNetwork = await provider.getNetwork();
-        if (network != providerNetwork.chainId.toString()) {
+        /**
+         * Confirmation if provider is in correct network.
+         */
+
+        const providerNetwork: ethers.providers.Network = await provider.getNetwork();
+        const provChainId: number = providerNetwork.chainId;
+        if (network != provChainId.toString()) {
             throw new Error('Error getting network name');
         }
-        const Wallet = new ethers.Wallet(PRIVATE_KEY as string, provider);
+
+        // Initialization of initCode, a parameter for deploy function.
         const initCode = bytecode + await encoder(["address"], [ownerAddress]);
-        const Factory = new ethers.ContractFactory(artifacts.abi, artifacts.bytecode, Wallet);
-        const factory = Factory.attach(FACTORY_ADDRESS as string);
+
+        // Initialization of signer for deployment.
+        const signer: ethers.Wallet = new ethers.Wallet(ownerKey as string, provider);
+
+        // Getting the contract address of the Factory Contract.
+        const Factory: ethers.ContractFactory = new ethers.ContractFactory(artifacts.abi, artifacts.bytecode, signer);
+        const factory: ethers.Contract = Factory.attach(FACTORY_ADDRESS as string);
         
-        //Estimate the gas price and gasLimit first
+        // Estimate the possible gasLimit for deployment of contract.
         console.log('Starting to estimate gas for transaction.');
-        const gasLimit = await estimateGas(ownerAddress, FACTORY_ADDRESS as string, artifacts.abi, [initCode, salt]);
+        const estimateDeploymentGasLimit = factory.estimateGas.deploy(initCode, salt);
+        const parsedEstDepGasLimit: number = parseInt(ethers.utils.formatUnits((await estimateDeploymentGasLimit)._hex, 'wei'))
 
-        console.log('Gas successfully estimated.')
-        console.log('Starting to create safe multiSigTransaction...')
+        try {
 
-        if (network === '5') {
-            success = await mutliSigTransaction(providerNetwork.chainId.toString(), ethers.utils.formatUnits(gasLimit.finalizedGasLimit.number, 'ether').toString(), ownerAddress, '0x');
-        } else if (network === '11155111' || network === '534351' || network === '80001') {
-            const proposals: IProposal[] = await proposal(providerNetwork.chainId.toString(), ethers.utils.formatUnits(gasLimit.finalizedGasLimit.number, 'ether').toString(), ownerAddress, "0x")
-            const results = await verifyProposal(proposals, provider.connection.url);
-            console.log(results);
-            const leafHashes = results.map((result) => {
-                return ethers.utils.keccak256(ethers.utils.toUtf8Bytes(result));
-            })
-            console.log(leafHashes);
-            
+            /**
+             * This try/catch method will classify the transaction based on its provider network.
+             * This is the transaction method solely for goerli network, 
+             * it has fixed Eth amount to be sent to the owner address to use for the deployment of the contract.
+             * This method uses the API Kit, Protocol Kit and Relay Kit of Safe for a multisig transfer of the Eth.
+             */
+            if (network === '5') {
+                console.log('Starting to create safe multiSigTransaction...')
+                const amount = "0.0005" // in eth amount
+                await mutliSigTransaction(provChainId.toString(), amount, ownerAddress as string, '0x');
+                
+                console.log("Deploying contract address...")
+                const deploy = await factory.deploy(initCode, salt, {
+                    gasLimit: parsedEstDepGasLimit
+                });
+                
+                console.log('Finalizing contract address.')
+                const txReceipt = await deploy.wait();
+                const contractAddress = `${txReceipt.events[0].args[0]}`;
+                console.log('Contract address:', contractAddress);
+                return contractAddress;
+
+            } else if (network === '11155111' || network === '534351' || network === '80001') {
+
+                /**
+                 * This methods are for sepolia, mumbai and scroll network.
+                 */
+
+                // Creates proposal from 3 signers that will be verified by a node.
+                console.log('Starting proposal development...')
+                const proposals: IProposal[] = await proposal(provChainId.toString(), parsedEstDepGasLimit.toString(), ownerAddress as string, "0x")
+
+                // Receives the result of the verified proposal by the the node(s), this process make sure that only the delegated signers are correct
+                console.log('Verifying proposals..')
+                const results = await verifyProposal(proposals, provider.connection.url as string);
+
+                // Creation of proof using Zero Knowledge Roll-Up, the zero knowledge process are done off-chain to save gas fee, but will be verified later on chain.
+                console.log('Development of zkProof...')
+                const merkle = new MerkleTree([results[0]]);
+                let root: string = "";
+
+                for (let i = 1; i < results.length; i++) {
+                    const leaf = results[i];
+                    const index = merkle.addLeaf(leaf);
+                    root = merkle.getRoot();
+                    const proof = merkle.getProof(leaf, undefined, undefined, index);
+                    verifyProof(proof, leaf, root);
+                }
+
+                const _root = `0x${root}`;
+                console.log(_root);
+
+                // Initialization of signer for relayer.
+                console.log('Pulling executor wallet...')
+                const executor = new ethers.Wallet(EXECUTOR as string, provider);
+
+                // Getting the contract address of the Relay Contract.
+                const relayerContract = new ethers.Contract(RELAYER_CONTRACT as string, relayerArifacts.abi, executor);
+                const amount = ethers.utils.parseUnits("500000000000000", "wei");
+                
+                console.log('Transferring the gas fee to the ownerAddress..')
+                const transactionresponse = await relayerContract.verifiedTransfer(ownerAddress, _root, amount, {
+                    gasLimit: 300000
+                });
+
+                const receipt = await transactionresponse.wait();
+                console.log('Result of transfer of eth: ', receipt.status.toString());
+
+                console.log("Deploying contract address...")
+                const deploy = await factory.deploy(initCode, salt, {
+                    gasLimit: parsedEstDepGasLimit
+                });
+
+                console.log('Finalizing contract address.')
+                const txReceipt = await deploy.wait();
+                const contractAddress = `${txReceipt.events[0].args[0]}`;
+                console.log(contractAddress)
+                return contractAddress;
+            } else {
+                console.log('Not supported network');
+                throw new Error('Unable to deploy the contract.')
+            }
+        } catch (error: any) {
+            console.log(error.message);
+            throw new Error('Unable to deploy the contract.')
         }
-        
-        if (success) {
-            const deploy = await factory.deploy(initCode, salt);
-            const txReceipt = await deploy.wait();
-            contractAddress = `${txReceipt.events[0].args[0]}`;
-        }
-        
-        return contractAddress;
-        
+
     } catch (error: any) {
-        console.error(error.message)
+        console.error(error)
         throw new HttpException(400, error.message);
     }
 }

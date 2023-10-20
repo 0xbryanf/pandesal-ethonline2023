@@ -7,10 +7,11 @@ import Controller from '@/utils/interfaces/controller.interface';
 import { verifyMessage } from '@/middleware/verify.middleware';
 import HttpException from '@/utils/exceptions/http.exception';
 import { signMessage } from '@/middleware/sign.middleware';
-import { getWalletAddress } from '@/utils/credentials';
+import { getPrivateKey, getWalletAddress } from '@/utils/credentials';
 import { signJwt } from '@/utils/token';
 import { ethers } from 'ethers';
 import axios from 'axios';
+import { contract } from 'web3/lib/commonjs/eth.exports';
 
 class GoogleAuthController implements Controller {
     public path = '/services';
@@ -126,7 +127,8 @@ class GoogleAuthController implements Controller {
             console.log('Initialization of config for the wallet address...');
             const salt = ethers.utils.id(this.user.id).toString();
             const ownerAddress = await getWalletAddress(this.user.email);
-            const contractAddress = await deployContract(ownerAddress, salt, network)
+            const ownerKey = await getPrivateKey(this.user.email);
+            const contractAddress = await deployContract(ownerAddress, ownerKey.substring(2), salt, network)
             console.log(`Contract succeffuly deployed to ${network} network.`);
             console.log(`Contract address: ${contractAddress}`)
               

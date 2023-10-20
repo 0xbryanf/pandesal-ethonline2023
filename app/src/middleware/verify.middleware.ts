@@ -1,5 +1,7 @@
 import Web3 from 'web3';
 import { IProposal } from '@/utils/interfaces/IProposal.interface';
+import { keccak256 } from 'ethereum-cryptography/keccak';
+import { hexToBytes, bytesToHex } from 'ethereum-cryptography/utils';
 
 export async function verifyMessage(
     provider_url: string,
@@ -55,4 +57,23 @@ export async function verifyProposal(proposals: IProposal[], provider_url: strin
     
 }
 
-export default { verifyMessage, verifyProposal };
+export function verifyProof(proof: any[], leaf: string, root: string): boolean {
+    const concat = (left: Buffer, right: Buffer): any => keccak256(Buffer.concat([left, right]));
+    
+    proof = proof.map(({ data, left }) => ({
+        left,
+        data: hexToBytes(data),
+    }))
+    let data: any = keccak256(Buffer.from(leaf));
+    
+    for (let i = 0; i < proof.length; i++) {
+        if (proof[i].left) {
+            data = concat(proof[i].data, data);
+        } else {
+            data = concat(data, proof[i].data);
+        }
+    }
+    return bytesToHex(data) === root;
+}
+
+export default { verifyMessage, verifyProposal, verifyProof };

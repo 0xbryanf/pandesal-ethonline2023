@@ -1,5 +1,5 @@
 require("@nomicfoundation/hardhat-toolbox");
-require("@nomicfoundation/hardhat-verify");
+// require("@nomicfoundation/hardhat-verify");
 require("dotenv/config");
 const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
 const { task } = require("hardhat/config")
@@ -12,7 +12,9 @@ const {
   API_MAINNET_ETHERSCAN_KEY,
   API_MUMBAI_ETHERSCAN_KEY,
   API_SCROLL_SEPOLIA_ETHERSCAN_KEY,
-  PRIVATE_KEY } = process.env;
+  PRIVATE_KEY_FACTORY_ADDRESS,
+  PRIVATE_KEY_RELAYER_ADDRESS
+  } = process.env;
 
 task("account", "returns nonce and balance for specified address on multiple networks")
   .addParam("address")
@@ -20,9 +22,10 @@ task("account", "returns nonce and balance for specified address on multiple net
     const web3Goerli = createAlchemyWeb3(API_URL_GOERLI);
     const web3Sepolia = createAlchemyWeb3(API_URL_SEPOLIA);
     const web3Mumbai = createAlchemyWeb3(API_URL_MUMBAI);
+    const web3Scroll = createAlchemyWeb3(API_URL_SCROLL_SEPOLIA);
 
-    const networkIDArr = ["Ethereum Goerli:", "Ethereum Sepolia:", "Polygon Mumbai:"];
-    const providerArr = [web3Goerli, web3Sepolia, web3Mumbai];
+    const networkIDArr = ["Ethereum Goerli:", "Ethereum Sepolia:", "Polygon Mumbai:", "Scroll Sepolia:"];
+    const providerArr = [web3Goerli, web3Sepolia, web3Mumbai, web3Scroll];
     const resultArr = [];
 
     for (let i = 0; i < providerArr.length; i++) {
@@ -37,24 +40,24 @@ task("account", "returns nonce and balance for specified address on multiple net
   //command: npx hardhat account --address 0x8f24b48a4570D8ad54CA693bde6A915B00101162
 
 module.exports = {
-  solidity: "0.8.19",
+  solidity: "0.8.20",
   networks: {
     hardhat: {},
     goerli: {
       url: API_URL_GOERLI,
-      accounts: [`0x${PRIVATE_KEY}`],
+      accounts: [`0x${PRIVATE_KEY_FACTORY_ADDRESS}`],
     },
     sepolia: {
       url: API_URL_SEPOLIA,
-      accounts: [`0x${PRIVATE_KEY}`],
+      accounts: [`0x${PRIVATE_KEY_FACTORY_ADDRESS}`],
     },
     maticmum: {
       url: API_URL_MUMBAI,
-      accounts: [`0x${PRIVATE_KEY}`]
+      accounts: [`0x${PRIVATE_KEY_FACTORY_ADDRESS}`]
     },
     scrollSepolia: {
       url: API_URL_SCROLL_SEPOLIA,
-      accounts: [`0x${PRIVATE_KEY}`]
+      accounts: [`0x${PRIVATE_KEY_FACTORY_ADDRESS}`]
     }
   },
   etherscan: {
