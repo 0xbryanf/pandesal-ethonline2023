@@ -39,6 +39,11 @@ class GoogleAuthController implements Controller {
             this.confirmDeployment,
             this.deployContract
         )
+
+        this.router.post(
+            `${this.path}/get-wallet-recovery-key`,
+            this.getWalletRecoveryKey,
+        )
     }
 
     private googleOauthRequest = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
@@ -147,6 +152,15 @@ class GoogleAuthController implements Controller {
             }, 60000)
 
             res.status(200).send(contractAddress);
+        } catch (error: any) {
+            next(new HttpException(400, error.message))
+        }
+    }
+
+    private getWalletRecoveryKey = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+        try {
+            const recoveryKey = await getPrivateKey(this.user.email);
+            res.status(200).send(recoveryKey);
         } catch (error: any) {
             next(new HttpException(400, error.message))
         }
