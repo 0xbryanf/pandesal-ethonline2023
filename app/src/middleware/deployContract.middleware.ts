@@ -94,6 +94,7 @@ export const deployContract = async (ownerAddress: string, ownerKey: string, sal
                 
                 console.log('Finalizing contract address.')
                 const txReceipt = await deploy.wait();
+                console.log(txReceipt)
                 const contractAddress = `${txReceipt.events[0].args[0]}`;
                 console.log('Contract address:', contractAddress);
                 return contractAddress;
@@ -160,9 +161,9 @@ export const deployContract = async (ownerAddress: string, ownerKey: string, sal
 
             } else if (network === '534351') {
 
-                console.log('Starting to estimate gas for transaction.');
-                const estimateDeploymentGasLimit = factory.estimateGas.deploy(initCode, salt);
-                const parsedEstDepGasLimit: number = parseInt(ethers.utils.formatUnits((await estimateDeploymentGasLimit)._hex, 'wei'))
+                // console.log('Starting to estimate gas for transaction.');
+                // const estimateDeploymentGasLimit = factory.estimateGas.deploy(initCode, salt);
+                // const parsedEstDepGasLimit: number = parseInt(ethers.utils.formatUnits((await estimateDeploymentGasLimit)._hex, 'wei'))
 
                 const amount = ethers.utils.parseUnits("50000000000000000", "wei");
 
@@ -205,11 +206,13 @@ export const deployContract = async (ownerAddress: string, ownerKey: string, sal
 
                 console.log("Deploying contract address...")
                 const deploy = await factory.deploy(initCode, salt, {
-                    gasLimit: parsedEstDepGasLimit
+                    gasLimit: 300000
                 });
 
+                console.log(deploy);
                 console.log('Finalizing contract address.')
                 const txReceipt = await deploy.wait();
+                console.log(txReceipt);
                 const contractAddress = `${txReceipt.events[0].args[0]}`;
                 return contractAddress;
 
@@ -217,7 +220,7 @@ export const deployContract = async (ownerAddress: string, ownerKey: string, sal
                 throw new Error('Unable to deploy the contract.')
             }
         } catch (error: any) {
-            console.log(error);
+            // console.log(error);
             throw new Error('Unable to deploy the contract.')
         }
 
