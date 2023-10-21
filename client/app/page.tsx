@@ -24,7 +24,7 @@ export default function Home() {
           Embrace the future without the fuss – it's time to simplify Web3 onboarding.
         </p>
         <a className='bg-[#E9E1F8] rounded rounded-lg px-6 py-2 hover:shadow-md duration-100 text-xl text-black/80 font-semibold' href={googleOauth()}>
-          Sign up with &lt;Your_Company_Here&gt;
+          Log In To &lt;Your_Company_Here&gt;
         </a>
 
       </div>
