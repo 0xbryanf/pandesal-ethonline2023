@@ -95,7 +95,7 @@ export default function NetworkCard({ networkId }: any) {
                         Balance
                     </h2>
                     <p className='text-3xl py-4'>
-                        {balance} {networkName} ETH
+                        {balance} {networkName!=='Mumbai' ? networkName + ' ETH' : 'MATIC'}
                     </p>
                 </CardContent>
             </Card>

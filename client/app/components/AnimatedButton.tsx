@@ -5,7 +5,7 @@ import { TypeAnimation } from 'react-type-animation';
 export default function MyComponent() {
 
   return (
-      <a className='bg-[#E9E1F8] rounded rounded-lg px-6 py-2 shadow-sm hover:shadow-md duration-100 text-xl text-black/80 font-semibold' href={googleOauth()}>
+      <a className='bg-pandesal-purple/50 hover:bg-pandesal-purple/75 rounded rounded-lg px-6 py-2 shadow-sm hover:shadow-md duration-100 text-xl text-black/80 font-semibold' href={googleOauth()}>
         <TypeAnimation
           sequence={[
             'Log In to Pandesal',
