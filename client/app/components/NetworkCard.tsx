@@ -76,7 +76,7 @@ export default function NetworkCard({ networkId }: any) {
         </Card>
 
         {/* Group Information */}
-        <h2 className='text-2xl'>☕ Create or Join a Group in {networkName}</h2>
+        <h2 className='text-2xl mt-8'>☕ Create or Join a Group in {networkName}</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 justify-items-stretch gap-4 mb-4">
           
           {/**

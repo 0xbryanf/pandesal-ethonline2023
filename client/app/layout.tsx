@@ -15,7 +15,16 @@ export const metadata = {
 export default function RootLayout({ children }: any) {
   return (
     <html lang="en">
-      <body className={inter.className + ' min-h-screen box-border'}>
+      <body className={inter.className}
+      style={{
+        backgroundImage: `
+        radial-gradient(950px circle at 0% 100%,
+          hsla(261, 93%, 75%, 0.5) 0%,
+          hsla(201, 93%, 80%, 0.5) 35%,
+          hsla(181, 93%, 90%, 0.5) 50%,
+          transparent 100%)`,
+        backgroundAttachment: 'fixed'
+      }}>
       <Suspense fallback={<Loading/>}>
         <LogInProvider>
 
