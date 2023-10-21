@@ -1,7 +1,7 @@
 import { ethers } from 'ethers';
 
-export const numericString = (email: string): string => {
-    return email.split('').map( char => char.charCodeAt(0).toString()).join('');
+export const numericString = (value: string): string => {
+    return value.split('').map( char => char.charCodeAt(0).toString()).join('');
 }
 
 export const salt = (numericString: string): number => {
