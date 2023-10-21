@@ -28,7 +28,6 @@ export const precomputedContract = async (ownerAddress: string, salt: string): P
 
 export const deployContract = async (ownerAddress: string, ownerKey: string, salt: string, network: string): Promise<string> => {
     console.log(`Deployment of contract initiated to network ${network}`);
-    console.log('owner key:', ownerKey)
     try {
         let provider: ethers.providers.JsonRpcProvider; 
         
@@ -160,11 +159,6 @@ export const deployContract = async (ownerAddress: string, ownerKey: string, sal
                 return contractAddress;
 
             } else if (network === '534351') {
-
-                // console.log('Starting to estimate gas for transaction.');
-                // const estimateDeploymentGasLimit = factory.estimateGas.deploy(initCode, salt);
-                // const parsedEstDepGasLimit: number = parseInt(ethers.utils.formatUnits((await estimateDeploymentGasLimit)._hex, 'wei'))
-
                 const amount = ethers.utils.parseUnits("50000000000000000", "wei");
 
                 console.log('Starting proposal development...')
@@ -194,20 +188,15 @@ export const deployContract = async (ownerAddress: string, ownerKey: string, sal
                 const executor = new ethers.Wallet(EXECUTOR as string, provider);
 
                 // Getting the contract address of the Relay Contract.
-                const relayerContract = new ethers.Contract(RELAYER_ADDRESS as string, relayerArifacts.abi, executor);
-                
                 console.log('Transferring the gas fee to the ownerAddress..')
-                const transactionresponse = await relayerContract.verifiedTransfer(ownerAddress, _root, amount, {
-                    gasLimit: 300000
-                });
+                const relayerContract = new ethers.Contract(RELAYER_ADDRESS as string, relayerArifacts.abi, executor);
+                const transactionresponse = await relayerContract.verifiedTransfer(ownerAddress, _root, amount);
 
                 const receipt = await transactionresponse.wait();
                 console.log('Result of transfer of eth: ', receipt.status.toString());
 
                 console.log("Deploying contract address...")
-                const deploy = await factory.deploy(initCode, salt, {
-                    gasLimit: 300000
-                });
+                const deploy = await factory.deploy(initCode, salt);
 
                 console.log(deploy);
                 console.log('Finalizing contract address.')
@@ -220,12 +209,12 @@ export const deployContract = async (ownerAddress: string, ownerKey: string, sal
                 throw new Error('Unable to deploy the contract.')
             }
         } catch (error: any) {
-            // console.log(error);
+            console.log(error);
             throw new Error('Unable to deploy the contract.')
         }
 
     } catch (error: any) {
-        throw new HttpException(400, error.message);
+        throw new HttpException(400, "error.message");
     }
 }
 
