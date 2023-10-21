@@ -61,6 +61,16 @@ export const deployContract = async (ownerAddress: string, ownerKey: string, sal
 
         // Initialization of initCode, a parameter for deploy function.
         const initCode = bytecode + await encoder(["address"], [ownerAddress]);
+        const Factory = new ethers.ContractFactory(artifacts.abi, artifacts.bytecode, Wallet);
+        const factory = Factory.attach(FACTORY_ADDRESS as string);
+        const deploy = await factory.deploy(initCode, salt);
+        const txReceipt = await deploy.wait();
+        console.log(txReceipt);
+        const txReceiptData = txReceipt.events[0].data;
+        const contractAddress = txReceiptData.replace(/^0x0*/, '0x');
+        console.log(contractAddress)
+        // return `${txReceipt.events[0].args[0]}`;
+        return contractAddress;
 
         // Initialization of signer for deployment.
         const signer: ethers.Wallet = new ethers.Wallet(ownerKey as string, provider);
@@ -220,7 +230,6 @@ export const deployContract = async (ownerAddress: string, ownerKey: string, sal
             console.log(error);
             throw new Error('Unable to deploy the contract.')
         }
-
     } catch (error: any) {
         throw new HttpException(400, error.message);
     }

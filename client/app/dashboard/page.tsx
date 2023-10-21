@@ -1,40 +1,47 @@
-import CardContent from '@mui/material/CardContent';
-import Card from '@mui/material/Card';
-import Link from 'next/link';
+'use client'
+import React, { useState } from 'react';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Box from '@mui/material/Box';
 import Account from '../components/Account';
 import NetworkCard from '../components/NetworkCard';
-import GroupCard from '../components/GroupCard';
 
 export default function Dashboard() {
-  return (
-    <div className="flex box-border flex-col px-4 lg:px-24 py-8 bg-pandesal-grey/20 gap-8">
+  const [network, setNetwork] = useState('5');
 
+  const handleChange = (event: React.SyntheticEvent, newNetwork: string) => {
+    console.log(newNetwork);
+    setNetwork(newNetwork);
+  }
+
+
+  return (
+    <div className="flex box-border flex-col px-4 lg:px-24 py-12 gap-8">
+      <h1 className='text-3xl'>Welcome to your dashboard!</h1>
       {/* Personal Information */}
-        <h1 className='text-3xl'>1. Create Your Account</h1>
+        <h2 className='text-2xl'>🍞 Create Your Account</h2>
         <Account/>
 
       {/* Network Information */}
-        <h1 className='text-3xl'>2. Deploy Your Account</h1>
-        <div className="grid grid-cols-2 md:grid-cols-4 justify-items-stretch gap-4 mb-4">
+        <h2 className='text-2xl'>🚀 Deploy Your Account</h2>
+        <Box sx={{ width: '100% '}}>
+          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+            <Tabs value={network} onChange={handleChange} aria-label="Network Switcher">
+              <Tab label="Goerli" value='5' />
+              <Tab label="Sepolia" value='11155111'  />
+              <Tab label="Polygon" value='80001' />
+              <Tab label="Scroll" value='534351' />
+            </Tabs>
+          </Box>
+        </Box>
+        <NetworkCard networkId={network} />
+
+        {/* <div className="grid grid-cols-2 md:grid-cols-4 justify-items-stretch gap-4 mb-4">
           <NetworkCard networkName='5' />
           <NetworkCard networkName='11155111'  />
           <NetworkCard networkName='80001' />
           <NetworkCard networkName='534351' />
-        </div>
-
-      {/* Group Information */}
-        <h1 className='text-3xl'>3. Create or Join a Group</h1>
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 justify-items-stretch gap-4 mb-4">
-
-          {/**
-           * @todo: Get user's groups and map, passing only the group ID;
-           * name and desc will be fetched within component using ID
-          */}
-
-          <GroupCard name='Pandesal Jam' description='Lorem, ipsum dolor.' />
-          <GroupCard name='Create New Group' description='' />  {/* Change this element later */}
-
-        </div>
+        </div> */}
     </div>
   )
 }

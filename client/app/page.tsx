@@ -2,44 +2,42 @@ import googleOauth from '@/utils/googleOauth';
 import Image from 'next/image'
 
 export default function Home() {
+
   return (
     <div
-      className="flex h-full box-border flex-col-reverse lg:flex-row px-4 py-24 md:p-24 justify-end md:items-center bg-pandesal-blue text-white gap-8"
-      style={{
-        backgroundImage: `radial-gradient(650px circle at 0% 0%,
-          hsl(218, 41%, 35%) 15%,
-          hsl(218, 41%, 30%) 35%,
-          hsl(218, 41%, 20%) 75%,
-          hsl(218, 41%, 19%) 80%,
-          transparent 100%),
-        radial-gradient(1250px circle at 100% 100%,
-          hsl(218, 41%, 45%) 15%,
-          hsl(218, 41%, 30%) 35%,
-          hsl(218, 41%, 20%) 75%,
-          hsl(218, 41%, 19%) 80%,
-          transparent 100%)`
-      }}
+      className="flex min-h-screen box-border p-4 flex-col justify-center
+      lg:flex-row md:items-center md:px-20 gap-8"
       >
 
-
       {/* Left Section */}
-      <div className='flex flex-col lg:w-1/2 gap-2 p-4'>
-        <h1 className="text-4xl md:text-6xl">
-          Frictionless Web3 onboarding, a friends-only central bank
+      <div className='flex flex-col items-start lg:w-1/2 gap-4 p-4'>
+        <h1 className="text-3xl md:text-5xl font-semibold">
+          Onboard Your Users With Ease
         </h1>
-        <p>
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eum delectus nemo commodi accusantium ipsum optio.
+        {/* <p className='text-xl'>
+          Discover a seamless gateway to the decentralized world - to your business ecosystem. 
+        </p> */}
+        <p className='hidden md:block'>
+          {/* Save the complex wallet setups and crypto jargon for later.*/} Let <b>your users</b> join the blockchain revolution instantly. 
         </p>
+        <p className='italic'>
+          Embrace the future without the fuss – it's time to simplify Web3 onboarding.
+        </p>
+        <a className='bg-[#E9E1F8] rounded rounded-lg px-6 py-2 hover:shadow-md duration-100 text-xl text-black/80 font-semibold' href={googleOauth()}>
+          Log In To &lt;Your_Company_Here&gt;
+        </a>
 
       </div>
 
       {/* Right Section */}
-      <div className="flex h-64 flex-col w-full lg:w-1/2 items-center text-center gap-2 p-4 justify-center bg-white/80 rounded border-2 border-black shadow-md">
-        <a className='bg-pandesal-orange rounded px-6 py-1 hover:shadow-md duration-100 text-xl' href={googleOauth()}>Sign Up With Google</a>
-        <p className="text-black">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit.
-        </p>
-      </div>
+      {/* <div className="flex lg:w-1/2 place-content-center">
+        <Image
+        src='/images/hero-image.png'
+        alt=''
+        width={500}
+        height={500}
+        />
+      </div> */}
     </div>
   )
 }
