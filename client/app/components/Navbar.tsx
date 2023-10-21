@@ -3,6 +3,7 @@ import React, { useState, } from 'react';
 import { useRouter } from 'next/navigation';
 import NavMenu from './NavMenu';
 import Link from 'next/link';
+import GitHubIcon from '@mui/icons-material/GitHub';
 import googleOauth from '@/utils/googleOauth';
 import { useUser } from "../context/LogInContext";
 
@@ -20,9 +21,9 @@ const NavBar = () => {
         <Link href="/" className='text-2xl uppercase font-bold'>Pandesal</Link>
       </div>
       {/* <div>NavCenter</div> */}
-      <div className='flex gap-8 items-center'>
+      <div className='flex gap-4 items-center'>
         <Link href='https://github.com/0xbryanf/pandesal-ethonline2023' target='_blank' className='text-sm'>
-            About Us
+            <GitHubIcon/>
         </Link>
         {isUserSignedIn ? ( 
             <NavMenu/>

@@ -10,7 +10,6 @@ export default function Dashboard() {
   const [network, setNetwork] = useState('5');
 
   const handleChange = (event: React.SyntheticEvent, newNetwork: string) => {
-    console.log(newNetwork);
     setNetwork(newNetwork);
   }
 
@@ -20,7 +19,7 @@ export default function Dashboard() {
       <h1 className='text-3xl'>Welcome to your dashboard!</h1>
       {/* Personal Information */}
         <h2 className='text-2xl'>🍞 Create Your Account</h2>
-        <Account/>
+        <Account networkId={network} />
 
       {/* Network Information */}
         <h2 className='text-2xl'>🚀 Deploy Your Account</h2>
