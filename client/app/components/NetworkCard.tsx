@@ -13,17 +13,30 @@ export default function NetworkCard({ networkId }: any) {
     const [loading, setLoading] = useState(false);
     const [confirming, setConfirming] = useState(false);
     const [groupsJoined, setGroupsJoined] = useState([]);
-
-    useEffect(() => {
-    /** 
-     * @todo: fetch signed-in user's groups that are a part of this network    
-     */
-    }, [])
+    const [inputValue, setInputValue] = useState(0);
+    const [balance, setBalance] = useState(0);
 
     const networkName = networkId === '5' ? 'Goerli'
     : networkId === '11155111' ? 'Sepolia'
     : networkId === '80001' ? 'Mumbai'
     : 'Scroll'
+
+    useEffect(() => {
+    /** 
+     * @todo: fetch signed-in user's groups that are a part of this network
+     * @todo: fetch deploystatus of current network    
+     */
+    }, [])
+
+    useEffect(() => {
+        setDeployStatus(false);
+    }, [networkId, networkName])
+
+    const handleInput = (event: any) => {
+        const input = event.target.value;
+        setInputValue(input);
+    }
+
     
 
     async function action() {
@@ -57,23 +70,64 @@ export default function NetworkCard({ networkId }: any) {
     return (
         <>
         {confirming && <SignMessage confirming={confirming} setConfirming={setConfirming} />}
-        <Card variant='outlined' sx={{ minWidth: 100 }} className='shadow-md'>
-            <CardContent>
-                <h2 className="text-xl">
-                    {networkName}
-                </h2>
-                {deployStatus ? (
-                    <p className='text-gray-500 text-sm py-2'>
-                        Deployed! 🎉
+        <div className='flex gap-4'>
+            <Card variant='outlined' sx={{ minWidth: 200, width: 'max-content', flex: 1 }} className='shadow-md '>
+                <CardContent>
+                    <h2 className="text-xl">
+                        {networkName}
+                    </h2>
+                    {deployStatus ? (
+                        <p className='text-gray-500 text-sm py-2'>
+                            Deployed! 🎉
+                        </p>
+                    ) : (
+                        <>
+                            <p className='text-gray-500 text-sm py-2'>{loading ? 'Deploying. This can take several minutes.' : 'Not yet deployed.'}</p>
+                            <button className={`border border-pandesal-orange text-pandesal-orange duration-100 text-xs rounded p-2 ${!loading && 'hover:bg-pandesal-orange hover:text-white'}`} disabled={loading ? true : false} onClick={action}>{!loading ? 'Deploy now' : 'Loading...'}</button>
+                        </>
+                    )}
+                </CardContent>
+            </Card>
+
+            <Card variant='outlined' sx={{ minWidth: 200, width: 'max-content', flex: 1 }} className='shadow-md '>
+                <CardContent>
+                    <h2 className="text-xl">
+                        Balance
+                    </h2>
+                    <p className='text-3xl py-4'>
+                        {balance} {networkName} ETH
                     </p>
-                ) : (
-                    <>
-                        <p className='text-gray-500 text-sm py-2'>Not yet deployed.</p>
-                        <button className={`border border-pandesal-orange text-pandesal-orange duration-100 text-xs rounded p-2 ${!loading && 'hover:bg-pandesal-orange hover:text-white'}`} disabled={loading ? true : false} onClick={action}>{!loading ? 'Deploy now' : 'Loading...'}</button>
-                    </>
-                )}
-            </CardContent>
-        </Card>
+                </CardContent>
+            </Card>
+
+            <Card variant='outlined' sx={{ minWidth: 200, width: 'max-content', flex: 1 }} className='shadow-md'>
+                <CardContent>
+                    <h2 className='text-xl'>Send Tokens</h2>
+                    <div className='grid grid-cols-2 gap-x-2 py-2'>
+                        <p className='text-gray-400'>Amount in ETH</p>
+                        <p className='text-gray-400'>Recipient address</p>
+                        <input 
+                            type="text"
+                            name="sendToken"
+                            id="sendToken"
+                            className='border rounded p-2'
+                            placeholder='0.001'
+                            onInput={handleInput}
+                            />
+                        <input
+                            type="text"
+                            name="sendTo"
+                            id="sendTo"
+                            className='border rounded p-2'
+                            placeholder='0x0000000000000000'
+                            onInput={handleInput}
+                            />
+
+                    </div>
+
+                </CardContent>
+            </Card>
+        </div>
 
         {/* Group Information */}
         <h2 className='text-2xl mt-8'>☕ Create or Join a Group in {networkName}</h2>
