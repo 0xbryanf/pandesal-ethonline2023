@@ -11,7 +11,18 @@ function configEnv(): void {
         JWT_SECRET: str(),
         GOOGLE_CLIENT_SECRET: str(),
         GOOGLE_CLIENT_ID: str(),
-        GOOGLE_REDIRECT_URL: str()
+        GOOGLE_REDIRECT_URL: str(),
+        API_URL_GOERLI: str(),
+        API_URL_SEPOLIA: str(),
+        API_URL_MUMBAI: str(),
+        SAFE_1: str(),
+        SAFE_2: str(),
+        SAFE_3: str(),
+        SAFE_ADDRESS: str(),
+        GELATO_RELAY_API_KE: str(),
+        FACTORY_ADDRESS: str(),
+        RELAYER_ADDRESS: str(),
+        EXECUTOR: str()
     })
 }
 

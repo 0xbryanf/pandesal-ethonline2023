@@ -3,6 +3,8 @@ import SafeApiKit from '@safe-global/api-kit';
 import Safe, { EthersAdapter, SafeAccountConfig, SafeFactory, getSafeContract } from '@safe-global/protocol-kit';
 import { GelatoRelayPack } from '@safe-global/relay-kit';
 import { MetaTransactionData, MetaTransactionOptions, OperationType, SafeMultisigTransactionResponse, SafeSignature, TransactionOptions } from '@safe-global/safe-core-sdk-types'
+import axios from 'axios';
+
 import 'dotenv/config';
 
 
@@ -226,7 +228,7 @@ export const secondConfirmation = async (signer2: ethers.Wallet, safeTransaction
 
 }
 
-export const execTransaction = async (encodedTx: string, chainId: number, options: MetaTransactionOptions): Promise<void> => {
+export const execTransaction = async (encodedTx: string, chainId: number, options: MetaTransactionOptions): Promise<boolean> => {
     try {
         console.log('Execution of safe transaction started...')
         const relayTransaction = {
@@ -240,6 +242,30 @@ export const execTransaction = async (encodedTx: string, chainId: number, option
         const relayKit = new GelatoRelayPack(process.env.GELATO_RELAY_API_KEY as string)
         const response = await relayKit.relayTransaction(relayTransaction)
         console.log(`Relay Transaction Task ID: https://relay.gelato.digital/tasks/status/${response.taskId}`)
+
+        while (true) {
+            const result = await axios.get(`https://relay.gelato.digital/tasks/status/${response.taskId}`);
+            const taskState = result.data.task.taskState;
+
+            if (taskState === 'ExecSuccess') {
+                console.log('Relay transaction is success.')
+                return true
+            } else if (taskState === 'CheckPending') {
+                console.log('Checking for pending transaction.');
+                await new Promise((resolve) => setTimeout(resolve, 10000))
+            } else if (taskState === 'ExecPending') {
+                console.log('Executing pending transaction.');
+                await new Promise((resolve) => setTimeout(resolve, 10000))
+            } else if (taskState === 'WaitingForConfirmation') {
+                console.log('Waiting for confirmation.');
+                await new Promise((resolve) => setTimeout(resolve, 10000))
+            } else if (taskState === 'Cancelled') {
+                console.log('Relay transaction was cancelled.');
+                return false;
+            } else {
+                console.log('Unexpected task state:', taskState);
+            }
+        }
     } catch (error: any) {
         console.log("Failed to execute safe transaction.")
         throw new Error(error)
@@ -250,7 +276,7 @@ export const execTransaction = async (encodedTx: string, chainId: number, option
 export default {createSafe, fundSafe, createTransaction, firstConfirmation, secondConfirmation }
 
 
-main("5", "0.0001", '0x3E91bE3C8E9E4cEED8Ed1249F1537A402C8b1AF6', '0x')
+main("5", "0.00001", '0x3E91bE3C8E9E4cEED8Ed1249F1537A402C8b1AF6', '0x')
     .catch((error) => {
         console.log(error);
     })

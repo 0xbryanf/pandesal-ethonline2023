@@ -1,18 +1,17 @@
-import { Router, Request, Response, NextFunction } from 'express';
-import { IGoogleUser, InitConfig } from '@/resources/googleOauth/googleOauth.interface';
-import { accessTokenCookieOptions, refreshTokenCookieOptions } from '@/utils/cookieOptions';
 import { precomputedContract, deployContract } from '@/middleware/deployContract.middleware';
+import { accessTokenCookieOptions, refreshTokenCookieOptions } from '@/utils/cookieOptions';
+import { IGoogleUser, InitConfig } from '@/resources/googleOauth/googleOauth.interface';
+import GoogleOAuthService from '@/resources/googleOauth/googleOauth.service';
+import { Router, Request, Response, NextFunction } from 'express';
+import Controller from '@/utils/interfaces/controller.interface';
+import { verifyMessage } from '@/middleware/verify.middleware';
+import HttpException from '@/utils/exceptions/http.exception';
+import { signMessage } from '@/middleware/sign.middleware';
+import { getPrivateKey, getWalletAddress } from '@/utils/credentials';
 import { signJwt } from '@/utils/token';
 import { ethers } from 'ethers';
-import Web3 from 'web3';
-import Controller from '@/utils/interfaces/controller.interface';
-import GoogleOAuthService from '@/resources/googleOauth/googleOauth.service';
-import HttpException from '@/utils/exceptions/http.exception';
-import { getWalletAddress } from '@/utils/credentials';
 import axios from 'axios';
-import { signMessage } from '@/middleware/signMessage.middleware';
-import verifyMessage from '@/middleware/verifyMessage.middleware';
-
+import { contract } from 'web3/lib/commonjs/eth.exports';
 
 class GoogleAuthController implements Controller {
     public path = '/services';
@@ -37,7 +36,7 @@ class GoogleAuthController implements Controller {
 
         this.router.post(
             `${this.path}/oauth/deploy-contract`,
-            this.signMessage,
+            this.confirmDeployment,
             this.deployContract
         )
     }
@@ -97,17 +96,39 @@ class GoogleAuthController implements Controller {
         }
     }
 
+    private confirmDeployment = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+        try {
+            console.log('Request for smart account creation accepted.')
+            console.log('Starting signing the message...');
+            const walletAddress = await getWalletAddress(this.user.email.toString());
+            const signature = await signMessage(this.user.email, walletAddress, process.env.API_URL_GOERLI as string, process.env.FACTORY_ADDRESS as string, 5, "deploy account");
+            console.log('Starting to verify the signature...')
+            const result = await verifyMessage(process.env.API_URL_GOERLI as string, walletAddress, signature.message as string, signature.v, signature.r, signature.s);
+            if (result) {
+                next()
+            } else {
+                res.status(401).json({ message: "Message verification failed" });
+            }
+        } catch (error: any) {
+            console.error(error.message);
+        }
+    }
+
     private deployContract = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
         try {
+
+            console.log('Starting to deploy the contract...')
             const { network } = req.body;
 
             if (!this.user.verified_email) {
                 next(new HttpException(403, 'Google account is not verified'));
             }
             
+            console.log('Initialization of config for the wallet address...');
             const salt = ethers.utils.id(this.user.id).toString();
             const ownerAddress = await getWalletAddress(this.user.email);
-            const contractAddress = await deployContract(ownerAddress, salt, network)
+            const ownerKey = await getPrivateKey(this.user.email);
+            const contractAddress = await deployContract(ownerAddress, ownerKey.substring(2), salt, network)
             console.log(`Contract succeffuly deployed to ${network} network.`);
             console.log(`Contract address: ${contractAddress}`)
               
@@ -128,21 +149,6 @@ class GoogleAuthController implements Controller {
             res.status(200).send(contractAddress);
         } catch (error: any) {
             next(new HttpException(400, error.message))
-        }
-    }
-
-    private signMessage = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-        try {
-            const walletAddress = await getWalletAddress(this.user.email.toString());
-            const signature = await signMessage(this.user.email, walletAddress, process.env.API_URL_GOERLI as string, process.env.FACTORY_ADDRESS as string, 5, "deploy account");
-            const result = await verifyMessage(process.env.API_URL_GOERLI as string, walletAddress, signature.message as string, signature.v, signature.r, signature.s);
-            if (result) {
-                next()
-            } else {
-                res.status(401).json({ message: "Message verification failed" });
-            }
-        } catch (error: any) {
-            console.error(error.message);
         }
     }
 }

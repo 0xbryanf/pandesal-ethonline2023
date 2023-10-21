@@ -1,4 +1,4 @@
-interface ISignResult {
+export interface ISignResult {
     message?: string | undefined;
     messageHash: string;
     v: string;
