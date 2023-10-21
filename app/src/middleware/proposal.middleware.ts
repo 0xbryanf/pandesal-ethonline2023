@@ -29,9 +29,9 @@ export const proposal = async (network: string, amount:string, destinationAddres
     }
 
     const signerKeys = [
-        process.env.OWNER_1_PRIVATE_KEY as string,
-        process.env.OWNER_2_PRIVATE_KEY as string,
-        process.env.OWNER_3_PRIVATE_KEY as string,
+        process.env.SAFE_1 as string,
+        process.env.SAFE_2 as string,
+        process.env.SAFE_3 as string,
     ];
 
     const proposals = await Promise.all(

@@ -13,7 +13,7 @@ import "dotenv/config";
 import { IProposal } from '@/utils/interfaces/IProposal.interface';
 import { verifyProposal } from './verify.middleware';
 
-const { API_URL_GOERLI, API_URL_SEPOLIA, API_URL_MUMBAI, API_URL_SCROLL_SEPOLIA, EXECUTOR, RELAYER_SCROLL_CONTRACT, RELAYER_CONTRACT, FACTORY_ADDRESS } = process.env;
+const { API_URL_GOERLI, API_URL_SEPOLIA, API_URL_MUMBAI, API_URL_SCROLL_SEPOLIA, EXECUTOR, RELAYER_ADDRESS, FACTORY_ADDRESS } = process.env;
         
 export const precomputedContract = async (ownerAddress: string, salt: string): Promise<string> => {
     try {
@@ -28,6 +28,7 @@ export const precomputedContract = async (ownerAddress: string, salt: string): P
 
 export const deployContract = async (ownerAddress: string, ownerKey: string, salt: string, network: string): Promise<string> => {
     console.log(`Deployment of contract initiated to network ${network}`);
+    console.log('owner key:', ownerKey)
     try {
         let provider: ethers.providers.JsonRpcProvider; 
         
@@ -135,8 +136,8 @@ export const deployContract = async (ownerAddress: string, ownerKey: string, sal
                 const executor = new ethers.Wallet(EXECUTOR as string, provider);
 
                 // Getting the contract address of the Relay Contract.
-                const relayerContract = new ethers.Contract(RELAYER_CONTRACT as string, relayerArifacts.abi, executor);
-                const amount = ethers.utils.parseUnits("5000000000000000", "wei");
+                const relayerContract = new ethers.Contract(RELAYER_ADDRESS as string, relayerArifacts.abi, executor);
+                const amount = ethers.utils.parseUnits("50000000000000000", "wei");
                 
                 console.log('Transferring the gas fee to the ownerAddress..')
                 const transactionresponse = await relayerContract.verifiedTransfer(ownerAddress, _root, amount, {
@@ -158,7 +159,12 @@ export const deployContract = async (ownerAddress: string, ownerKey: string, sal
                 return contractAddress;
 
             } else if (network === '534351') {
-                const amount = ethers.utils.parseUnits("5000000000000000", "wei");
+
+                console.log('Starting to estimate gas for transaction.');
+                const estimateDeploymentGasLimit = factory.estimateGas.deploy(initCode, salt);
+                const parsedEstDepGasLimit: number = parseInt(ethers.utils.formatUnits((await estimateDeploymentGasLimit)._hex, 'wei'))
+
+                const amount = ethers.utils.parseUnits("50000000000000000", "wei");
 
                 console.log('Starting proposal development...')
                 const proposals: IProposal[] = await proposal(provChainId.toString(), amount.toString(), ownerAddress as string, "0x")
@@ -182,29 +188,29 @@ export const deployContract = async (ownerAddress: string, ownerKey: string, sal
 
                 const _root = `0x${root}`;
 
-                // Initialization of signer for relayer.
-                console.log('Pulling executor wallet...')
-                const executor = new ethers.Wallet(EXECUTOR as string, provider);
+                // // Initialization of signer for relayer.
+                // console.log('Pulling executor wallet...')
+                // const executor = new ethers.Wallet(EXECUTOR as string, provider);
 
-                // Getting the contract address of the Relay Contract.
-                const relayerContract = new ethers.Contract(RELAYER_SCROLL_CONTRACT as string, relayerArifacts.abi, executor);
+                // // Getting the contract address of the Relay Contract.
+                // const relayerContract = new ethers.Contract(RELAYER_ADDRESS as string, relayerArifacts.abi, executor);
                 
-                console.log('Transferring the gas fee to the ownerAddress..')
-                const transactionresponse = await relayerContract.verifiedTransfer(ownerAddress, _root, amount, {
-                    gasLimit: 300000
-                });
+                // console.log('Transferring the gas fee to the ownerAddress..')
+                // const transactionresponse = await relayerContract.verifiedTransfer(ownerAddress, _root, amount, {
+                //     gasLimit: 300000
+                // });
 
-                const receipt = await transactionresponse.wait();
-                console.log('Result of transfer of eth: ', receipt.status.toString());
+                // const receipt = await transactionresponse.wait();
+                // console.log('Result of transfer of eth: ', receipt.status.toString());
 
                 console.log("Deploying contract address...")
-                const deploy = await factory.deploy(initCode, salt );
+                const deploy = await factory.deploy(initCode, salt, {
+                    gasLimit: parsedEstDepGasLimit
+                });
 
                 console.log('Finalizing contract address.')
                 const txReceipt = await deploy.wait();
-                console.log(txReceipt);
                 const contractAddress = `${txReceipt.events[0].args[0]}`;
-                console.log(contractAddress)
                 return contractAddress;
 
             } else {

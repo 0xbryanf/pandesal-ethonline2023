@@ -30,9 +30,9 @@ export const mutliSigTransaction = async (network: string, amount: string, desti
         
 
         console.log('Initiated signers...')
-        const signer1 = new ethers.Wallet(process.env.OWNER_1_PRIVATE_KEY as string, provider);
-        const signer2 = new ethers.Wallet(process.env.OWNER_2_PRIVATE_KEY as string, provider);
-        const signer3 = new ethers.Wallet(process.env.OWNER_3_PRIVATE_KEY as string, provider);
+        const signer1 = new ethers.Wallet(process.env.SAFE_1 as string, provider);
+        const signer2 = new ethers.Wallet(process.env.SAFE_2 as string, provider);
+        const signer3 = new ethers.Wallet(process.env.SAFE_3 as string, provider);
         const withdrawAmount = ethers.utils.parseUnits(amount, 'ether').toString();
 
         console.log('safeTransaction data initiated.')
@@ -229,9 +229,9 @@ export const createSafe = async (): Promise<void> => {
             maxPriorityFeePerGas: ethers.BigNumber.from(gasData.maxPriorityFeePerGas)
         }
 
-        const signer1 = new ethers.Wallet(process.env.OWNER_1_PRIVATE_KEY as string, provider);
-        const signer2 = new ethers.Wallet(process.env.OWNER_2_PRIVATE_KEY as string, provider);
-        const signer3 = new ethers.Wallet(process.env.OWNER_3_PRIVATE_KEY as string, provider);
+        const signer1 = new ethers.Wallet(process.env.SAFE_1 as string, provider);
+        const signer2 = new ethers.Wallet(process.env.SAFE_2 as string, provider);
+        const signer3 = new ethers.Wallet(process.env.SAFE_3 as string, provider);
         
         console.log("ethAdapterSigner1 created.")
         const ethAdapterSigner1 = new EthersAdapter({
