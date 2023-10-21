@@ -1,11 +1,11 @@
 
-const hre = require('hardhat');
+const { ethers } = require('hardhat');
 const { verifyContract } = require('./verifyContract');
 
 const main = async () => {
     const args = [];
     console.log("Started deploying smart contract...")
-    const factory = await hre.ethers.deployContract("Relayer");
+    const factory = await ethers.deployContract("Relayer");
     console.log('Finalizing the deployment.')
     await factory.waitForDeployment();
     console.log("Factory deployed to:", factory.target);
