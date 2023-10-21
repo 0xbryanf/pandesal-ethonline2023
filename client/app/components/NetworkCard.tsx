@@ -82,7 +82,7 @@ export default function NetworkCard({ networkId }: any) {
                         </p>
                     ) : (
                         <>
-                            <p className='text-gray-500 text-sm py-2'>{loading ? 'Deploying. This can take several minutes.' : 'Not yet deployed.'}</p>
+                            <p className='text-gray-500 text-sm py-2'>{loading ? "Deploying. This can take several minutes. Please don't navigate away from this tab :)" : 'Not yet deployed.'}</p>
                             <button className={`border border-pandesal-orange text-pandesal-orange duration-100 text-xs rounded p-2 ${!loading && 'hover:bg-pandesal-orange hover:text-white'}`} disabled={loading ? true : false} onClick={action}>{!loading ? 'Deploy now' : 'Loading...'}</button>
                         </>
                     )}
