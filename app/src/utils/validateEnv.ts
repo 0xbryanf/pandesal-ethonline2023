@@ -19,7 +19,7 @@ function configEnv(): void {
         SAFE_2: str(),
         SAFE_3: str(),
         SAFE_ADDRESS: str(),
-        GELATO_RELAY_API_KE: str(),
+        GELATO_RELAY_API_KEY: str(),
         FACTORY_ADDRESS: str(),
         RELAYER_ADDRESS: str(),
         EXECUTOR: str()
