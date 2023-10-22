@@ -27,7 +27,7 @@ This groundbreaking approach democratizes Web3 access, promising a more inclusiv
 
 2. **Walletless Onboarding:** We save you from the hassle of downloading, installing, and creating a wallet. The entire onboarding process is designed to effortlessly generate the necessary accounts for you to start in Web3. Users can create unique wallet addresses derived from their email addresses. Getting your email address is not enough. An email address is considered public information, and it can be accessed by anyone. Therefore, what we've done is transform and shield it with multiple layers of security. <br/> <br/> Importantly, we've ensured that this transformation is deterministic, meaning that no matter what happens, your email address will reliably return the same wallet address. This way, your personal information remains secure, even though it starts with something as common as an email address. These addresses can be deployed on various blockchain networks. If a user engages in malicious activity, they can be banned from that particular network.
 
-<div style="text-align:center">
+<div style="text-center">
     <img src="https://res.cloudinary.com/dlooinspu/image/upload/v1697939547/Pandesal_-_Frame_1_efi1y8.jpg" width="70%" height="auto">
 </div> <br/>
 
@@ -35,17 +35,17 @@ This groundbreaking approach democratizes Web3 access, promising a more inclusiv
 3. **Gasless Transaction Deployment:** "What is gas fee? Why do I need to pay gas? Where will I get the payment for the gas fee?" These are some of the common questions users often ask when they start exploring blockchain. Understanding the concept of gas fees can indeed take some time. </br></br> Here's where we come in: we've got you covered. We handle the payment for gas fees when you deploy and create your user's smart account, engage in peer-to-peer transactions, or deploy a contract. You don't have to worry about handling the intricacies of gas fees – we make it seamless for you. Users can deploy their deterministic contract addresses without the need to pay gas fees, making it easier for them to get started on the blockchain. <br/><br/>
 **We offer two convenient methods for paying gas fees:** <br/>
 **a. Safe Protocol + Relay Kit:** This method combines the safety of the Safe Protocol with the efficiency of the Relay Kit, ensuring a secure and reliable way to handle gas fees. <br/>
-**b. Pandsal Multisig ZK-Paymaster:** Our Pandsal Multisig ZK-Paymaster is another option, providing a versatile and user-friendly approach to managing gas fees.<br/><br/>
+**b. Pandsal Multisig ZK-Paymaster:** Our Pandsal Multisig ZK-Paymaster is another option, providing a versatile and user-friendly approach to managing gas fees.<br/>
 
 <div style="text-align:center">
-    <img src="https://res.cloudinary.com/dlooinspu/image/upload/v1697941229/Pandesal_1_plywvj.jpg" width="70%" height="auto">
+    <img src="https://res.cloudinary.com/dlooinspu/image/upload/v1697941229/Pandesal_1_plywvj.jpg" width="100%" height="auto">
     <h3>Safe Protocol + Relay Kit</h3>
-</div> <br/><br/>
+</div> <br/>
 
 <div style="text-align:center">
-    <img src="https://res.cloudinary.com/dlooinspu/image/upload/v1697943919/Pandesal_2_yee90t.jpg" width="70%" height="auto">
+    <img src="https://res.cloudinary.com/dlooinspu/image/upload/v1697943919/Pandesal_2_yee90t.jpg" width="100%" height="auto">
     <h3>Pandsal Multisig Zk-Paymaster</h3>
-</div> <br/><br/>
+</div><br/>
 
 4. **Multisig Deployment Transaction** To ensure the utmost security for your assets, we have integrated Safe's Multisignature feature and harnessed the power of their Protocol Kit and API kits in our development process. This robust combination enhances asset protection and strengthens the overall security of our platform.
 
