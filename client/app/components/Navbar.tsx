@@ -17,12 +17,15 @@ const NavBar = () => {
   return (
     <nav className='flex flex-row px-6 py-3 justify-between items-center w-full bg-transparent'>
       <div className='flex gap-3'>
-        <Link href="/" className='text-2xl uppercase font-bold'>Pandesal</Link>
+        <Link href="/" className='text-2xl uppercase font-bold text-gray-800'><span className='text-rose-700'>P</span>andsal</Link>
       </div>
       {/* <div>NavCenter</div> */}
       <div className='flex gap-8 items-center'>
-        <Link href='https://github.com/0xbryanf/pandesal-ethonline2023' target='_blank' className='text-sm'>
+        <Link href='https://github.com/0xbryanf/pandesal-ethonline2023' target='_blank' className='text-sm font-medium text-gray-900'>
             About Us
+        </Link>
+        <Link href='https://github.com/0xbryanf/pandesal-ethonline2023' target='_blank' className='text-sm font-medium text-gray-900'>
+            Documentation
         </Link>
         {isUserSignedIn ? ( 
             <NavMenu/>
