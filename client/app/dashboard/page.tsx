@@ -39,6 +39,9 @@ export default function Dashboard() {
     }
   }
   
+  /**
+   * @Bryan: balance checker here (only contract for now)
+   */
   async function getContractBalance () {
       try {
         const networkId = network;

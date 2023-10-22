@@ -26,10 +26,9 @@ export default function NetworkCard({ networkId, contractAddress }: any) {
         setContract(contractAddress);
     }, [contractAddress])
 
-    useEffect(() => {
-        getNetworkStatus();
-    }, [contract])
-
+    /**
+     * @Bryan: network status checker here
+     */
     async function getNetworkStatus() {
         try {
             const data = {
@@ -46,12 +45,10 @@ export default function NetworkCard({ networkId, contractAddress }: any) {
             console.error("Error:", error)
         }
     }
-
-    // useEffect(() => {
-    //     getNetworkStatus();
-    // }, [])
-
     
+    useEffect(() => {
+        getNetworkStatus();
+    }, [contract])
 
     async function action() {
         try {
