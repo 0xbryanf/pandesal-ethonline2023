@@ -13,7 +13,7 @@ export default function Home() {
         <p className="mb-8 text-lg font-normal text-gray-500 lg:text-lg sm:px-16 xl:px-48 dark:text-gray-400">Our platform is designed to guide everyday users and businesses into a user-friendly web3 experience.</p>
         <div className="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
           <a href={googleOauth()} className="inline-flex justify-center bg-pink-600 items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg border border-gray-300 hover:bg-rose-600 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
-            Connect with Pandesal
+            Connect with Pandsal
           </a>
         </div>
         <div className="px-4 mx-auto text-center md:max-w-screen-md lg:max-w-screen-xl lg:px-40">
