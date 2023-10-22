@@ -39,7 +39,7 @@ class APIService {
                 apiKey: API_Key,
             }
             const response: AxiosResponse = await axios.get(API_Url, { params })
-            return response.status;
+            return response.data.status.toString();
         } catch (error: any) {
             console.log(error.message)
             throw new HttpException(500, 'Unable to get transactions.')

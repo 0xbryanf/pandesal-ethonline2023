@@ -88,7 +88,7 @@ export const deployContract = async (ownerAddress: string, ownerKey: string, sal
                 
                 console.log("Deploying contract address...")
                 const deploy = await factory.deploy(initCode, salt, {
-                    gasLimit: parsedEstDepGasLimit
+                    gasLimit: 300000
                 });
                 
                 console.log('Finalizing contract address.')
@@ -198,10 +198,8 @@ export const deployContract = async (ownerAddress: string, ownerKey: string, sal
                 console.log("Deploying contract address...")
                 const deploy = await factory.deploy(initCode, salt);
 
-                console.log(deploy);
                 console.log('Finalizing contract address.')
                 const txReceipt = await deploy.wait();
-                console.log(txReceipt);
                 const contractAddress = `${txReceipt.events[0].args[0]}`;
                 return contractAddress;
 

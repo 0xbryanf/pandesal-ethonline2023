@@ -32,7 +32,7 @@ export default function NetworkCard({ networkId }: any) {
             const response = await axios.post("http://localhost:1989/api/etherscan/get-contract-exec-status", data)
             console.log(response.data);
             
-            if (response.data.data == 200) {
+            if (response.data.data == '1') {
             setDeployStatus(true);
         }
         } catch (error) {
@@ -42,6 +42,7 @@ export default function NetworkCard({ networkId }: any) {
 
     useEffect(() => {
         getNetworkStatus();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [networkId])
 
     
@@ -84,7 +85,7 @@ export default function NetworkCard({ networkId }: any) {
                             {networkName}
                         </h2>
                         {deployStatus ? (
-                            <p className='md:col-span-2 bg-gray-200 rounded rounded-md p-2 text-center'>
+                            <p className='md:col-span-2 bg-gray-200 rounded-md p-2 text-center'>
                                 Deployed & Verified! 🎉
                             </p>
                         ) : (
@@ -143,6 +144,7 @@ export default function NetworkCard({ networkId }: any) {
         {groupsJoined?.length > 0 ? (
             groupsJoined.map(group => {
                 return (
+                    // eslint-disable-next-line react/jsx-key
                     <GroupCard name={group} description={group} />
                 )
             })
