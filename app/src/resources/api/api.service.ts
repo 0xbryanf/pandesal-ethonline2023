@@ -46,7 +46,7 @@ class APIService {
         }
     }
 
-    public async getEthBalanceSingleAddress(address: string, network: string): Promise<string> {
+    public async getEthBalanceSingleAddress(address: string, network: string): Promise<any> {
         try {
             let API_Url: string = "";
             let API_Key: string = "";
@@ -79,11 +79,12 @@ class APIService {
             }
 
             const response: AxiosResponse = await axios.get(API_Url, { params });
-            if (response.data.status === '1') {
-                return `${ethers.utils.formatEther(response.data.result)}`
-            } else {
-                throw new Error(`Error: ${response.data.message}`);
-            }
+            return response;
+            // if (response.data.status === '1') {
+            //     return `${ethers.utils.formatEther(response.data.result)}`
+            // } else {
+            //     throw new Error(`Error: ${response.data.message}`);
+            // }
         } catch (error: any) {
             console.log(error.message)
             throw new HttpException(500, 'Unable to get balance.')

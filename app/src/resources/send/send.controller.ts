@@ -9,22 +9,22 @@ class SendController implements Controller {
     public router = Router();
     private SendService = new SendService();
 
-    constructor() {
-        this.initialiseRoutes();
-    }
+    // constructor() {
+    //     this.initialiseRoutes();
+    // }
 
-    private initialiseRoutes(): void {
-        this.router.post(
-            `${this.path}/eth-via-emailaddress`,
-            this.ethViaEmailAddress,   
-        )
-    }
+    // private initialiseRoutes(): void {
+    //     this.router.post(
+    //         `${this.path}/eth-via-emailaddress`,
+    //         this.ethViaEmailAddress,   
+    //     )
+    // }
 
-    private ethViaEmailAddress = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
-        const { emailAddress, network } = req.body;
-        const response = await this.SendService.sendEthViaEmailAddress(emailAddress, network);
-    }
-    
+    // private ethViaEmailAddress = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+    //     const { network, emailAddress, amount} = req.body;
+    //     const data = await this.SendService.sendEthViaEmailAddress(network, emailAddress, amount);
+    //     res.status(200).json({ data });
+    // }
 }
 
 export default SendController;

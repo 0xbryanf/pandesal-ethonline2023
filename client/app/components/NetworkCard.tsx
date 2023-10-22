@@ -29,8 +29,8 @@ export default function NetworkCard({ networkId }: any) {
                 network: networkId,
             }
             console.log('Checking network status', data);
-            const response = await axios.post("http://localhost:1989/api/etherscan/goerli-contract-exec.status", data)
-            console.log(response.data.data);
+            const response = await axios.post("http://localhost:1989/api/etherscan/get-contract-exec-status", data)
+            console.log(response.data);
             
             if (response.data.data == 200) {
             setDeployStatus(true);

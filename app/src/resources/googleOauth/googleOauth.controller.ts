@@ -9,14 +9,15 @@ import HttpException from '@/utils/exceptions/http.exception';
 import { signMessage } from '@/middleware/sign.middleware';
 import { getPrivateKey, getWalletAddress } from '@/utils/credentials';
 import { signJwt } from '@/utils/token';
+import SendService from '@/resources/send/send.service';
 import { ethers } from 'ethers';
 import axios from 'axios';
-import { contract } from 'web3/lib/commonjs/eth.exports';
 
 class GoogleAuthController implements Controller {
     public path = '/services';
     public router = Router();
     private GoogleOauthService = new GoogleOAuthService();
+    private SendService = new SendService();
     private user!: IGoogleUser;
 
     constructor() {
@@ -43,6 +44,11 @@ class GoogleAuthController implements Controller {
         this.router.post(
             `${this.path}/get-wallet-recovery-key`,
             this.getWalletRecoveryKey,
+        )
+
+        this.router.post(
+            `${this.path}/send-eth-viaemail`,
+            this.sendEthViaEmail,   
         )
     }
 
@@ -77,7 +83,7 @@ class GoogleAuthController implements Controller {
         }
     }
 
-    private getAccount = async (req: Request, res: Response, next: NextFunction): Promise<InitConfig | void> => {
+    public getAccount = async (req: Request, res: Response, next: NextFunction): Promise<InitConfig | void> => {
         try {
             if (!this.user.verified_email) {
                 next(new HttpException(403, 'Google account is not verified'));
@@ -161,6 +167,16 @@ class GoogleAuthController implements Controller {
         try {
             const recoveryKey = await getPrivateKey(this.user.email);
             res.status(200).send(recoveryKey);
+        } catch (error: any) {
+            next(new HttpException(400, error.message))
+        }
+    }
+
+    private sendEthViaEmail = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+        try {
+            const { network, emailAddress, amount } = req.body;
+            const data = await this.SendService.sendEthViaEmailAddress(network, this.user.id, this.user.email, emailAddress, amount );
+            res.status(200).send({data});
         } catch (error: any) {
             next(new HttpException(400, error.message))
         }
