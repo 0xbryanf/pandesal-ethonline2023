@@ -1,8 +1,9 @@
 'use client'
-import React, { useState, } from 'react';
+import React from 'react';
 import { useRouter } from 'next/navigation';
 import NavMenu from './NavMenu';
 import Link from 'next/link';
+import GitHubIcon from '@mui/icons-material/GitHub';
 import googleOauth from '@/utils/googleOauth';
 import { useUser } from "../context/LogInContext";
 
@@ -20,17 +21,14 @@ const NavBar = () => {
         <Link href="/" className='text-2xl uppercase font-bold text-gray-800'><span className='text-rose-700'>P</span>andsal</Link>
       </div>
       {/* <div>NavCenter</div> */}
-      <div className='flex gap-8 items-center'>
-        <Link href='https://github.com/0xbryanf/pandesal-ethonline2023' target='_blank' className='text-sm font-medium text-gray-900'>
-            About Us
-        </Link>
-        <Link href='https://github.com/0xbryanf/pandesal-ethonline2023' target='_blank' className='text-sm font-medium text-gray-900'>
-            Documentation
+      <div className='flex gap-4 items-center'>
+        <Link href='https://github.com/0xbryanf/pandesal-ethonline2023' target='_blank' className='text-sm'>
+            <GitHubIcon/>
         </Link>
         {isUserSignedIn ? ( 
             <NavMenu/>
           ) : (
-          <button className='rounded px-3 py-1 border border-pandesal-blue text-pandesal-blue hover:text-white hover:bg-pandesal-blue/80 duration-100' onClick={handleSignIn}>
+          <button className='rounded px-3 py-1 border border-pink-600 text-pink-600 hover:text-white hover:bg-pink-500 duration-100' onClick={handleSignIn}>
               Log In
           </button>
           )

@@ -8,7 +8,7 @@ import { LogInProvider } from "./context/LogInContext";
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'Pandesal Easy App',
+  title: 'Pandsal Easy App',
   description: 'Join your friends today!',
 }
 

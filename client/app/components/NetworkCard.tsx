@@ -13,17 +13,37 @@ export default function NetworkCard({ networkId }: any) {
     const [loading, setLoading] = useState(false);
     const [confirming, setConfirming] = useState(false);
     const [groupsJoined, setGroupsJoined] = useState([]);
-
-    useEffect(() => {
-    /** 
-     * @todo: fetch signed-in user's groups that are a part of this network    
-     */
-    }, [])
+    const [gasPrice, setGasPrice] = useState(0);
+    const [ethPrice, setEthPrice] = useState(0);
+    const [ethUsdPrice, setEthUsdPrice] = useState(0);
 
     const networkName = networkId === '5' ? 'Goerli'
     : networkId === '11155111' ? 'Sepolia'
     : networkId === '80001' ? 'Mumbai'
     : 'Scroll'
+
+    const getNetworkStatus = async () => {
+        try {
+            const data = {
+                contractAddress: contract,
+                network: networkId,
+            }
+            console.log('Checking network status', data);
+            const response = await axios.post("http://localhost:1989/api/etherscan/goerli-contract-exec.status", data)
+            console.log(response.data.data);
+            
+            if (response.data.data == 200) {
+            setDeployStatus(true);
+        }
+        } catch (error) {
+            console.error("Error:", error)
+        }
+    }
+
+    useEffect(() => {
+        getNetworkStatus();
+    }, [networkId])
+
     
 
     async function action() {
@@ -57,23 +77,59 @@ export default function NetworkCard({ networkId }: any) {
     return (
         <>
         {confirming && <SignMessage confirming={confirming} setConfirming={setConfirming} />}
-        <Card variant='outlined' sx={{ minWidth: 100 }} className='shadow-md'>
-            <CardContent>
-                <h2 className="text-xl">
-                    {networkName}
-                </h2>
-                {deployStatus ? (
-                    <p className='text-gray-500 text-sm py-2'>
-                        Deployed! 🎉
-                    </p>
-                ) : (
-                    <>
-                        <p className='text-gray-500 text-sm py-2'>Not yet deployed.</p>
-                        <button className={`border border-pandesal-orange text-pandesal-orange duration-100 text-xs rounded p-2 ${!loading && 'hover:bg-pandesal-orange hover:text-white'}`} disabled={loading ? true : false} onClick={action}>{!loading ? 'Deploy now' : 'Loading...'}</button>
-                    </>
-                )}
-            </CardContent>
-        </Card>
+        <div className='flex flex-col md:flex-row gap-4'>
+            <Card variant='outlined' sx={{ minWidth: 300 }} className='shadow-md flex-1 md:flex-none'>
+                <CardContent className="flex flex-col md:grid md:grid-cols-3 gap-2 text-xs md:items-center items-start">
+                        <h2 className="text-xl">
+                            {networkName}
+                        </h2>
+                        {deployStatus ? (
+                            <p className='md:col-span-2 bg-gray-200 rounded rounded-md p-2 text-center'>
+                                Deployed & Verified! 🎉
+                            </p>
+                        ) : (
+                            <>
+                                <button className={`border border-blue-600 text-blue-600 duration-100 text-xs rounded p-2 md:col-span-2 ${!loading && 'hover:bg-blue-600 hover:text-white'}`} disabled={loading ? true : false} onClick={action}>{!loading ? 'Deploy now' : 'Loading...'}</button>
+                                <p className={!loading ? 'hidden' : 'text-xs'}>This can take several minutes.</p>
+                            </>
+                        )}
+                        <p className="grid grid-cols-2 gap-x-4 gap-y-2 my-4 col-span-3">
+                            <span>Gas Price</span>
+                            <span>{gasPrice} wei</span>
+                            <span>Last ETH Price</span>
+                            <span>{ethPrice} ETH</span>
+                            <span>ETH/USD Last Price</span>
+                            <span>{ethUsdPrice}</span>
+                            
+                        </p>
+                </CardContent>
+            </Card>
+
+            <Card variant='outlined' sx={{ minWidth: 300 }} className='shadow-md flex-1'>
+                <CardContent className='text-xs'>
+                    <h2 className='text-xl'>Send Tokens</h2>
+                        <input
+                            type="text"
+                            name="sendTo"
+                            id="sendTo"
+                            className='w-full border rounded p-2 my-4 col-span-2'
+                            placeholder='Enter email address, wallet account or smart account'
+                            />
+                        <div className='flex gap-x-2 py-2'>
+                            <input 
+                                type="number"
+                                step='0.0000001'
+                                name="sendToken"
+                                id="sendToken"
+                                className='border rounded p-2 col-span-1 flex-1'
+                                placeholder='Amount in ETH'
+                                />
+                            <button className='bg-pink-600 text-white py-2 px-5 flex-none rounded'>Send</button>
+                        </div>
+
+                </CardContent>
+            </Card>
+        </div>
 
         {/* Group Information */}
         <h2 className='text-2xl mt-8'>☕ Create or Join a Group in {networkName}</h2>

@@ -26,8 +26,8 @@ const SignMessage: React.FC<IConfirmProps> = ({confirming, setConfirming}): JSX.
       <p className='text-xs p-4'>By clicking confirm, you are signing a message to the network with your address. Learn more about signing messages in our Web3 learning modules.</p>
 
       <div className='flex justify-center gap-2'>
-        <button className={`border border-pandesal-blue text-white bg-pandesal-blue duration-100 text-xs rounded p-2 ${!loading && 'hover:bg-pandesal-blue/70 hover:text-white'}`} disabled={loading ? true : false} onClick={confirm}>{!loading ? 'Confirm' : 'Loading...'}</button>
-        <button className={`border border-black text-black duration-100 text-xs rounded p-2 ${!loading && 'hover:bg-pandesal-orange hover:text-white'}`} disabled={loading ? true : false} onClick={cancel}>Cancel</button>
+        <button className={`border border-blue-600 text-white bg-blue-600 duration-100 text-xs rounded p-2 ${!loading && 'hover:bg-pandesal-blue/70 hover:text-white'}`} disabled={loading ? true : false} onClick={confirm}>{!loading ? 'Confirm' : 'Loading...'}</button>
+        <button className={`border-none text-gray-500 duration-100 text-xs rounded p-2 ${!loading && 'hover:text-black'}`} disabled={loading ? true : false} onClick={cancel}>Cancel</button>
 
       </div>
     </div>
