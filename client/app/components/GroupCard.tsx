@@ -26,7 +26,7 @@ const GroupCard = ({name, description}: any) => {
               name: name
             }
           }}
-          className='hover:text-pandesal-orange duration-100'
+          className='hover:text-pink-600 duration-100'
           >
           <ArrowOutwardIcon/>
         </Link>

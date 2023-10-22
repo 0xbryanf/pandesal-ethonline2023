@@ -89,7 +89,7 @@ export default function NetworkCard({ networkId }: any) {
                             </p>
                         ) : (
                             <>
-                                <button className={`border border-pandesal-orange text-pandesal-orange duration-100 text-xs rounded p-2 ${!loading && 'hover:bg-pandesal-orange hover:text-white'}`} disabled={loading ? true : false} onClick={action}>{!loading ? 'Deploy now' : 'Loading...'}</button>
+                                <button className={`border border-blue-600 text-blue-600 duration-100 text-xs rounded p-2 md:col-span-2 ${!loading && 'hover:bg-blue-600 hover:text-white'}`} disabled={loading ? true : false} onClick={action}>{!loading ? 'Deploy now' : 'Loading...'}</button>
                                 <p className={!loading ? 'hidden' : 'text-xs'}>This can take several minutes.</p>
                             </>
                         )}
@@ -124,7 +124,7 @@ export default function NetworkCard({ networkId }: any) {
                                 className='border rounded p-2 col-span-1 flex-1'
                                 placeholder='Amount in ETH'
                                 />
-                            <button className='bg-pandesal-purple/80 text-white py-2 px-5 flex-none rounded'>Send</button>
+                            <button className='bg-pink-600 text-white py-2 px-5 flex-none rounded'>Send</button>
                         </div>
 
                 </CardContent>
