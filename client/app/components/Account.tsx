@@ -8,11 +8,11 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useUser } from "../context/LogInContext";
 
 
-export default function Account({ networkId }: any) {
-  const { signIn } = useUser();
-  const [email, setEmail] = useState(null);
-  const [wallet, setWallet] = useState(null);
-  const [contract, setContract] = useState(null);
+export default function Account({ networkId, email, wallet, contract }: any) {
+  // const { signIn } = useUser();
+  // const [email, setEmail] = useState(null);
+  // const [wallet, setWallet] = useState(null);
+  // const [contract, setContract] = useState(null);
   const [privateKey, setPrivateKey] = useState('Private key will be shown here');
   const [walletBalance, setWalletBalance] = useState(0);
   const [contractBalance, setContractBalance] = useState(0);
@@ -23,24 +23,49 @@ export default function Account({ networkId }: any) {
   : networkId === '80001' ? 'Mumbai'
   : 'Scroll'
   
-  async function action() {
-    try {
-      const response = await axios("http://localhost:1989/api/services/oauth/get-account");
+  // async function action() {
+  //   try {
+  //     const response = await axios("http://localhost:1989/api/services/oauth/get-account");
       
-      if (response.data) {
-        setEmail(response.data.email);
-        setWallet(response.data.wallet);
-        setContract(response.data.contract);
-        signIn();
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  }
+  //     if (response.data) {
+  //       console.log('Getting account', response.data)
+  //       setEmail(response.data.email);
+  //       setWallet(response.data.wallet);
+  //       setContract(response.data.contract);
+  //       signIn();
+  //     }
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //   }
+  // }
 
-  useEffect(() => {
-    action();
-  }, []);
+  // useEffect(() => {
+  //   action();
+  // }, []);
+
+
+//   const getContractBalance = async () => {
+//     console.log(contract, networkId)
+//     try {
+//         const data = {
+//             address: contract,
+//             network: networkId,
+//         }
+//         console.log('Checking network balance', data);
+//         const response = await axios.post("http:// localhost:1989/api/etherscan/get-ethbalance-single-address", data)
+//         console.log(response.data.data);
+        
+//         if (response.data.data === 200) {
+//             console.log(response)
+//         }
+//     } catch (error) {
+//         console.error("Error:", error)
+//     }
+// }
+
+// useEffect(() => {
+//     getContractBalance();
+// }, [networkId])
 
   const handleReveal = () => {
     setReveal(prev => !reveal);

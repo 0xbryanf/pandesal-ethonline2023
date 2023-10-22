@@ -14,7 +14,7 @@ export default function Home() {
           <AnimatedButton/>
         </div>
         <div className="px-4 mx-auto text-center md:max-w-screen-md lg:max-w-screen-xl lg:px-40">
-          <span className="font-semibold text-gray-400 uppercase">FEATURES</span>
+          <span className="font-semibold text-gray-400 uppercase">Features</span>
           <div className="flex flex-wrap justify-center items-center mt-8 text-gray-500 sm:justify-between">
             <div className="mr-5 mb-5 lg:mb-0 hover:text-rose-600 dark:hover:text-gray-400">
               <h5 className="text-xl cursor-pointer font-extrabold">Walletless Onboarding</h5>
