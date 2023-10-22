@@ -1,10 +1,10 @@
-# Pandesal: Making Group Finance Effortless, Secure, and Rewarding
+# PANDSAL: Simplify Blockchain. Easy Onboarding. Endless Possibilities.
 
 **Authors:**
 - [0xbryanf@gmail.com](mailto:0xbryanf@gmail.com)
 - [paolanocom@gmail.com](mailto:paolanocom@gmail.com)
 
-Pandesal is a decentralized finance (DeFi) platform that reimagines the concept of "you are who your friends are." With our innovative platform, users can seamlessly collaborate, establish unique blockchain identities, and perform gasless transactions. Pandesal empowers groups of friends to pool funds, generate income together, and support one another effortlessly.
+Simplify Web3 onboarding, and welcome new users to your app - even if they're new to blockcain. Collaborate quickly with frictionless account creation, unique blockchain identities, and gasless transactions using only a Google account.
 
 ## Table of Contents
 - [Introduction](#pandesal-a-defi-platform-for-collaborative-finance)
@@ -17,18 +17,33 @@ Pandesal is a decentralized finance (DeFi) platform that reimagines the concept 
 - [License](#license)
 
 ## Project Overview
-Pandesal revolutionizes collaborative finance with a focus on user-friendly, secure, and efficient blockchain interactions. By offering deterministic wallet addresses, gasless transaction deployment, unique blockchain identities, and multi-signature security, Pandesal creates a supportive ecosystem for groups of friends to manage their finances together.
+The Pandsal project, named after the universally familiar bread that starts the day for many in the Philippines, is a pioneering endeavor to welcome Web2 users into Web3 in a much easier way. The mission is to enable and encourage users to interact with their beloved Web3 apps with fewer steps - especially if this is their first blockchain experience. All without sacrificing the decentralization and security of the technology.
 
-## Idea
-Imagine this scenario: You're at the bakery, craving that delicious pandesal (bread), but alas, you find out you're a bit short on cash to make the purchase. This is where Pandesal comes to the rescue! Whether you're the one in need or the friend who can help out, Pandesal offers a solution. It allows your friend to cover the cost while ensuring a secure and guaranteed way for the lender to be paid back.
+Conventionally, the journey into blockchain and decentralized applications (dApps) can be daunting, requiring know-how of complex cryptocurrency wallet downloads and the management of sensitive private keys. This isn't the most appealing entry into an otherwise exciting world. It needs to be simple, dependable, instant and versatile - like **pandesal!**
 
-In the process, you not only saved your friend but also saved your friendship from any consequences that borrowing money can sometimes bring.
+The Pandsal onboarding kit is here to remove those barriers and deliver accessibility for all.
 
-But Pandesal doesn't stop there! It's not just about individual transactions; it's about making group financing effortless, secure, and rewarding. You can use Pandesal for shared savings towards future goals, creating an emergency fund for your group, setting up a vacation fund with your team, and much more.
+Whether you're a consumer eager to explore the possibilities of Web3, or a business trying to harness the potential of blockchain technology, Pandsal has you covered.
 
-Our DeFi platform is tailored for groups of friends looking to generate income while supporting one another. Here's how Pandesal works:
+We've reimagined onboarding by minimizing - or delaying - the need for users or enterprises to grapple with private keys and downloading wallets., serving a seamless and secure transition. It's not a wallet, but a user-friendly, self-custodial gateway to the Ethereum network. No more depending on private keys or panicking over intimidating jargon before they're ready. 
 
-1. **Deterministic Wallet Addresses:** Users can create unique wallet addresses derived from their email addresses. These addresses can be deployed on various blockchain networks, ensuring uniqueness for each user. If a user engages in malicious activity, they can be banned from that particular network.
+Simply put, with Pandesal, your users are empowered to create accounts, access dApps, and manage digital assets in just a click or two. Tailor-fit it to your business's needs!
+
+With Pandesal at your service, your business or dApp can have full control over the full experience. Easy and dependable way to get you started.
+
+This groundbreaking approach democratizes Web3 access, promising a more inclusive and accessible future for blockchain technology. Start your day with Pandsal. Take a byte and we promise it'll be a great one.
+
+## Features:
+
+1. **Simplify Blockchain: Easy Onboarding:** Blockchain can be a complex and intimidating term, often associated with scams and technical jargon like "zero-knowledge proof" and "cryptocurrency." But we're here to make it easy to understand. 
+
+Think back to the early days of social media and online shopping. You didn't need to install a special wallet to get started, did you? Just an email address was enough. In the same way, Pandsal simplifies the process. When you hit the "connect" or "sign in" button, we use your familiar email address from the web2 world to instantly create a wallet and an account. It's that simple. No need to dive into the complexities of blockchain technology – Pandsal brings it to you in a way that anyone can grasp.
+
+As easy as it may get to start, the development and what's happening behind the scenes is far from the word "easy." We've taken the security of this project seriously.
+
+2. **Deterministic & Secure Wallet Addresses:** Users can create unique wallet addresses derived from their email addresses. These addresses can be deployed on various blockchain networks, ensuring uniqueness for each user. If a user engages in malicious activity, they can be banned from that particular network.
+
+![Alt Text]("public\Pandesal - Frame 1.jpg")
 
 2. **Gasless Transaction Deployment:** Users can deploy their deterministic contract addresses without the need to pay gas fees, making it easier for them to get started on the blockchain.
 
