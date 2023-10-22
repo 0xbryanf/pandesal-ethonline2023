@@ -2,7 +2,6 @@ import { Router, Request, Response, NextFunction } from 'express';
 import Controller from '@/utils/interfaces/controller.interface';
 import HttpException from '@/utils/exceptions/http.exception';
 import APIService from '@/resources/api/api.service';
-import axios from 'axios';
 import "dotenv/config";
 
 class APIController implements Controller {

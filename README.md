@@ -49,12 +49,12 @@ This groundbreaking approach democratizes Web3 access, promising a more inclusiv
 
 6. **DeFi Ready:** We've always kept in mind that what we're building should be versatile and useful in various ways, including as a DeFi-ready application. While time constraints prevented us from managing the integration of the Compound protocol at this moment, the current version of Pandsal is primed and ready for such integrations whenever the need arises. Our commitment to adaptability ensures that we can seamlessly incorporate these features in the future. <br/><br/>Our DeFi integration isn't limited solely to the Compound Protocol. Pandsal's capabilities extend to cross-chain transactions, thanks to the utilization of CCIP (Cross-Chain Interoperability Protocol) and more. This means that our platform is designed to support a wide range of DeFi functionalities and can facilitate transactions across different blockchain networks, enhancing its flexibility and utility in the DeFi space.<br/><br/>
 <div style="text-align:center flex justify-center">
-    <img src="https://res.cloudinary.com/dlooinspu/image/upload/v1697946366/Pandesal_4_fopetu.jpg" width="70%" height="auto">
+    <img src="https://res.cloudinary.com/dlooinspu/image/upload/v1697946366/Pandesal_4_fopetu.jpg" width="100%" height="auto">
     <h3>Staking + Supply (Compound)</h3>
 </div> <br/>
 
 <div style="text-align:center">
-    <img src="https://res.cloudinary.com/dlooinspu/image/upload/v1697946368/Pandesal_5_ayx6xp.jpg" width="70%" height="auto">
+    <img src="https://res.cloudinary.com/dlooinspu/image/upload/v1697946368/Pandesal_5_ayx6xp.jpg" width="100%" height="auto">
     <h3>Purchasing + Borrowing (Compound)</h3>
 </div> <br/>
 
