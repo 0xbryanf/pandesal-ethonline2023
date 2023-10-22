@@ -7,7 +7,7 @@ import SignMessage from './SignMessage';
 import GroupCard from "../components/GroupCard";
 
 
-export default function NetworkCard({ networkId }: any) {
+export default function NetworkCard({ networkId, contractAddress }: any) {
     const [deployStatus, setDeployStatus] = useState(false);
     const [contract, setContract] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -22,27 +22,34 @@ export default function NetworkCard({ networkId }: any) {
     : networkId === '80001' ? 'Mumbai'
     : 'Scroll'
 
-    const getNetworkStatus = async () => {
+    useEffect(() => {
+        setContract(contractAddress);
+    }, [contractAddress])
+
+    useEffect(() => {
+        getNetworkStatus();
+    }, [contract])
+
+    async function getNetworkStatus() {
         try {
             const data = {
-                contractAddress: contract,
+                address: contract,
                 network: networkId,
             }
             console.log('Checking network status', data);
-            const response = await axios.post("http://localhost:1989/api/etherscan/goerli-contract-exec.status", data)
-            console.log(response.data.data);
-            
-            if (response.data.data == 200) {
-            setDeployStatus(true);
-        }
+            const response = await axios.post("http://localhost:1989/api/etherscan/get-contract-exec-status", data)
+            console.log('Client response', response)
+            if (response.data.data === 200) {
+                setDeployStatus(true);
+            }
         } catch (error) {
             console.error("Error:", error)
         }
     }
 
-    useEffect(() => {
-        getNetworkStatus();
-    }, [networkId])
+    // useEffect(() => {
+    //     getNetworkStatus();
+    // }, [])
 
     
 
