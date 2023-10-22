@@ -52,15 +52,15 @@ This groundbreaking approach democratizes Web3 access, promising a more inclusiv
 5. **Enhanced Privacy:** One of the challenges that businesses and enterprises face when considering the adoption of public blockchains is the inherent publicness and transparency of these networks. To address this concern, we have implemented zero-knowledge roll-up technology, ensuring that from the creation of accounts to the transfer of assets and data, everything is executed with the utmost security and privacy in mind. This approach allows for a more confidential and secure experience within the public blockchain ecosystem.
 
 6. **DeFi Ready:** We've always kept in mind that what we're building should be versatile and useful in various ways, including as a DeFi-ready application. While time constraints prevented us from managing the integration of the Compound protocol at this moment, the current version of Pandsal is primed and ready for such integrations whenever the need arises. Our commitment to adaptability ensures that we can seamlessly incorporate these features in the future. <br/><br/>Our DeFi integration isn't limited solely to the Compound Protocol. Pandsal's capabilities extend to cross-chain transactions, thanks to the utilization of CCIP (Cross-Chain Interoperability Protocol) and more. This means that our platform is designed to support a wide range of DeFi functionalities and can facilitate transactions across different blockchain networks, enhancing its flexibility and utility in the DeFi space.<br/><br/>
-<div style="text-align:center">
+<div style="text-align:center flex justify-center">
     <img src="https://res.cloudinary.com/dlooinspu/image/upload/v1697946366/Pandesal_4_fopetu.jpg" width="70%" height="auto">
     <h3>Staking + Supply (Compound)</h3>
-</div> <br/><br/>
+</div> <br/>
 
 <div style="text-align:center">
     <img src="https://res.cloudinary.com/dlooinspu/image/upload/v1697946368/Pandesal_5_ayx6xp.jpg" width="70%" height="auto">
     <h3>Purchasing + Borrowing (Compound)</h3>
-</div> <br/><br/>
+</div> <br/>
 
 7. **Simplify Blockchain: Endless Possibilities:** The base contract deployed for every user can be uniquely tailored to meet the specific needs of businesses or individual users. Imagine this scenario: you run a business, and you wish to incorporate web3 features for your employees. With Pandsal's onboarding kit, there's no need for them to invest time in learning, downloading, and installing wallets or navigating through various exchanges just to get started. Pandsal streamlines the entire process.<br/><br/>
 But here's the exciting part— the base contract, which we deploy, can be customized to suit the exact requirements of the business. For instance, you can integrate a time tracking feature into the base contract to automate employee payrolls. You can create a feature to automatically invest the company's income in different DeFi platforms, ensuring that your funds are not sitting idly. Or you could establish an employee cooperative within the company, powered by the Base smart contract, where employees can benefit from those who borrow.<br/><br/>
