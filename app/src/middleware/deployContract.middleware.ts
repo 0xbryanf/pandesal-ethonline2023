@@ -88,7 +88,7 @@ export const deployContract = async (ownerAddress: string, ownerKey: string, sal
                 
                 console.log("Deploying contract address...")
                 const deploy = await factory.deploy(initCode, salt, {
-                    gasLimit: 300000
+                    gasLimit: parsedEstDepGasLimit
                 });
                 
                 console.log('Finalizing contract address.')
